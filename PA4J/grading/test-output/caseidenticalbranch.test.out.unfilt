@@ -1,0 +1,55 @@
+#1
+_program
+  #1
+  _class
+    Main
+    Object
+    "./caseidenticalbranch.test"
+    (
+    #1
+    _method
+      main
+      Int
+      #1
+      _int
+        0
+      : Int
+    )
+  #1
+  _class
+    A
+    Object
+    "./caseidenticalbranch.test"
+    (
+    #1
+    _method
+      foo
+      #1
+      _formal
+        x
+        Int
+      Object
+      #1
+      _typcase
+        #1
+        _object
+          x
+        : Int
+        #1
+        _branch
+          a
+          Int
+          #1
+          _object
+            a
+          : _no_type
+        #1
+        _branch
+          b
+          Int
+          #1
+          _object
+            b
+          : _no_type
+      : _no_type
+    )

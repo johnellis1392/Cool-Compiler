@@ -1,0 +1,36 @@
+#1
+_program
+  #1
+  _class
+    Main
+    Object
+    "./selftypebadreturn.test"
+    (
+    #1
+    _method
+      main
+      Int
+      #1
+      _int
+        0
+      : Int
+    )
+  #1
+  _class
+    A
+    Object
+    "./selftypebadreturn.test"
+    (
+    #1
+    _method
+      foo
+      #1
+      _formal
+        x
+        Object
+      SELF_TYPE
+      #1
+      _new
+        A
+      : A
+    )

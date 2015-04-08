@@ -1,0 +1,151 @@
+
+_program
+
+  _class
+    Main
+    Object
+    filename
+    (
+
+    _method
+      main
+      Int
+
+      _int
+        0
+      : Int
+    )
+
+  _class
+    Z
+    Object
+    filename
+    (
+    )
+
+  _class
+    A
+    Z
+    filename
+    (
+    )
+
+  _class
+    B
+    Z
+    filename
+    (
+    )
+
+  _class
+    C
+    B
+    filename
+    (
+    )
+
+  _class
+    D
+    B
+    filename
+    (
+    )
+
+  _class
+    Test
+    Object
+    filename
+    (
+
+    _attr
+      a
+      A
+
+      _no_expr
+      : _no_type
+
+    _attr
+      b
+      B
+
+      _no_expr
+      : _no_type
+
+    _attr
+      c
+      C
+
+      _no_expr
+      : _no_type
+
+    _attr
+      d
+      D
+
+      _no_expr
+      : _no_type
+
+    _attr
+      z
+      Z
+
+      _no_expr
+      : _no_type
+
+    _method
+      f
+      Z
+
+      _cond
+
+        _bool
+          1
+        : Bool
+
+        _object
+          a
+        : A
+
+        _object
+          b
+        : B
+      : Z
+
+    _method
+      g
+      Object
+
+      _cond
+
+        _bool
+          1
+        : Bool
+
+        _object
+          a
+        : A
+
+        _object
+          b
+        : B
+      : Z
+
+    _method
+      h
+      B
+
+      _cond
+
+        _bool
+          1
+        : Bool
+
+        _object
+          c
+        : C
+
+        _object
+          a
+        : A
+      : Z
+    )

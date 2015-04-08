@@ -1,0 +1,86 @@
+1,72c1,12
+< 
+< _program
+< 
+<   _class
+<     A
+<     Object
+<     filename
+<     (
+< 
+<     _method
+<       foo
+<       A
+< 
+<       _let
+<         x
+<         A
+< 
+<         _no_expr
+<         : _no_type
+< 
+<         _block
+< 
+<           _assign
+<             x
+< 
+<             _new
+<               A
+<             : A
+<           : A
+< 
+<           _dispatch
+< 
+<             _object
+<               x
+<             : A
+<             foo
+<             (
+<             )
+<           : A
+<         : A
+<       : A
+<     )
+< 
+<   _class
+<     B
+<     A
+<     filename
+<     (
+< 
+<     _method
+<       foo
+<       A
+< 
+<       _object
+<         self
+<       : SELF_TYPE
+<     )
+< 
+<   _class
+<     Main
+<     Object
+<     filename
+<     (
+< 
+<     _method
+<       main
+<       Int
+< 
+<       _int
+<         6
+<       : Int
+<     )
+---
+> filename:line
+> java.lang.NullPointerException
+> 	at dispatch.semant(cool-tree.java:1193)
+> 	at Expressions.semant(cool-tree.java:307)
+> 	at block.semant(cool-tree.java:1438)
+> 	at let.semant(cool-tree.java:1532)
+> 	at method.semant(cool-tree.java:651)
+> 	at Features.semant(cool-tree.java:123)
+> 	at class_c.semant(cool-tree.java:560)
+> 	at Classes.semant(cool-tree.java:63)
+> 	at programc.semant(cool-tree.java:423)
+> 	at Semant.main(Semant.java:36)

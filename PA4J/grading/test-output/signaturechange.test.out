@@ -1,0 +1,66 @@
+
+_program
+
+  _class
+    Main
+    Object
+    filename
+    (
+
+    _method
+      main
+      Int
+
+      _int
+        0
+      : Int
+    )
+
+  _class
+    A
+    Object
+    filename
+    (
+
+    _attr
+      x
+      String
+
+      _no_expr
+      : _no_type
+
+    _method
+      foo
+
+      _formal
+        x
+        A
+      A
+
+      _object
+        x
+      : A
+    )
+
+  _class
+    B
+    A
+    filename
+    (
+
+    _method
+      foo
+
+      _formal
+        x
+        A
+
+      _formal
+        y
+        A
+      A
+
+      _object
+        self
+      : SELF_TYPE
+    )

@@ -1,0 +1,2 @@
+./overridingmethod3.test:1: Invalid class type: SELF_TYPE
+Compilation halted due to static semantic errors.

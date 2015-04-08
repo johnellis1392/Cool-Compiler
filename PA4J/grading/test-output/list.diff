@@ -1,0 +1,396 @@
+1,383c1,11
+< 
+< _program
+< 
+<   _class
+<     List
+<     Object
+<     filename
+<     (
+< 
+<     _method
+<       isNil
+<       Bool
+< 
+<       _bool
+<         1
+<       : Bool
+< 
+<     _method
+<       head
+<       Int
+< 
+<       _block
+< 
+<         _dispatch
+< 
+<           _object
+<             self
+<           : SELF_TYPE
+<           abort
+<           (
+<           )
+<         : Object
+< 
+<         _int
+<           0
+<         : Int
+<       : Int
+< 
+<     _method
+<       tail
+<       List
+< 
+<       _block
+< 
+<         _dispatch
+< 
+<           _object
+<             self
+<           : SELF_TYPE
+<           abort
+<           (
+<           )
+<         : Object
+< 
+<         _object
+<           self
+<         : SELF_TYPE
+<       : SELF_TYPE
+< 
+<     _method
+<       cons
+< 
+<       _formal
+<         i
+<         Int
+<       List
+< 
+<       _dispatch
+< 
+<         _new
+<           Cons
+<         : Cons
+<         init
+<         (
+< 
+<         _object
+<           i
+<         : Int
+< 
+<         _object
+<           self
+<         : SELF_TYPE
+<         )
+<       : List
+<     )
+< 
+<   _class
+<     Cons
+<     List
+<     filename
+<     (
+< 
+<     _attr
+<       car
+<       Int
+< 
+<       _no_expr
+<       : _no_type
+< 
+<     _attr
+<       cdr
+<       List
+< 
+<       _no_expr
+<       : _no_type
+< 
+<     _method
+<       isNil
+<       Bool
+< 
+<       _bool
+<         0
+<       : Bool
+< 
+<     _method
+<       head
+<       Int
+< 
+<       _object
+<         car
+<       : Int
+< 
+<     _method
+<       tail
+<       List
+< 
+<       _object
+<         cdr
+<       : List
+< 
+<     _method
+<       init
+< 
+<       _formal
+<         i
+<         Int
+< 
+<       _formal
+<         rest
+<         List
+<       List
+< 
+<       _block
+< 
+<         _assign
+<           car
+< 
+<           _object
+<             i
+<           : Int
+<         : Int
+< 
+<         _assign
+<           cdr
+< 
+<           _object
+<             rest
+<           : List
+<         : List
+< 
+<         _object
+<           self
+<         : SELF_TYPE
+<       : SELF_TYPE
+<     )
+< 
+<   _class
+<     Main
+<     IO
+<     filename
+<     (
+< 
+<     _attr
+<       mylist
+<       List
+< 
+<       _no_expr
+<       : _no_type
+< 
+<     _method
+<       print_list
+< 
+<       _formal
+<         l
+<         List
+<       Object
+< 
+<       _cond
+< 
+<         _dispatch
+< 
+<           _object
+<             l
+<           : List
+<           isNil
+<           (
+<           )
+<         : Bool
+< 
+<         _dispatch
+< 
+<           _object
+<             self
+<           : SELF_TYPE
+<           out_string
+<           (
+< 
+<           _string
+<             "\n"
+<           : String
+<           )
+<         : SELF_TYPE
+< 
+<         _block
+< 
+<           _dispatch
+< 
+<             _object
+<               self
+<             : SELF_TYPE
+<             out_int
+<             (
+< 
+<             _dispatch
+< 
+<               _object
+<                 l
+<               : List
+<               head
+<               (
+<               )
+<             : Int
+<             )
+<           : SELF_TYPE
+< 
+<           _dispatch
+< 
+<             _object
+<               self
+<             : SELF_TYPE
+<             out_string
+<             (
+< 
+<             _string
+<               " "
+<             : String
+<             )
+<           : SELF_TYPE
+< 
+<           _dispatch
+< 
+<             _object
+<               self
+<             : SELF_TYPE
+<             print_list
+<             (
+< 
+<             _dispatch
+< 
+<               _object
+<                 l
+<               : List
+<               tail
+<               (
+<               )
+<             : List
+<             )
+<           : Object
+<         : Object
+<       : Object
+< 
+<     _method
+<       main
+<       Object
+< 
+<       _block
+< 
+<         _assign
+<           mylist
+< 
+<           _dispatch
+< 
+<             _dispatch
+< 
+<               _dispatch
+< 
+<                 _dispatch
+< 
+<                   _dispatch
+< 
+<                     _new
+<                       List
+<                     : List
+<                     cons
+<                     (
+< 
+<                     _int
+<                       1
+<                     : Int
+<                     )
+<                   : List
+<                   cons
+<                   (
+< 
+<                   _int
+<                     2
+<                   : Int
+<                   )
+<                 : List
+<                 cons
+<                 (
+< 
+<                 _int
+<                   3
+<                 : Int
+<                 )
+<               : List
+<               cons
+<               (
+< 
+<               _int
+<                 4
+<               : Int
+<               )
+<             : List
+<             cons
+<             (
+< 
+<             _int
+<               5
+<             : Int
+<             )
+<           : List
+<         : List
+< 
+<         _loop
+< 
+<           _comp
+< 
+<             _dispatch
+< 
+<               _object
+<                 mylist
+<               : List
+<               isNil
+<               (
+<               )
+<             : Bool
+<           : Bool
+< 
+<           _block
+< 
+<             _dispatch
+< 
+<               _object
+<                 self
+<               : SELF_TYPE
+<               print_list
+<               (
+< 
+<               _object
+<                 mylist
+<               : List
+<               )
+<             : Object
+< 
+<             _assign
+<               mylist
+< 
+<               _dispatch
+< 
+<                 _object
+<                   mylist
+<                 : List
+<                 tail
+<                 (
+<                 )
+<               : List
+<             : List
+<           : List
+<         : Object
+<       : Object
+<     )
+---
+> java.lang.NullPointerException
+> 	at ClassTable.isSupertypeOf(ClassTable.java:406)
+> 	at ClassTable.lub(ClassTable.java:415)
+> 	at ClassTable.lub(ClassTable.java:410)
+> 	at cond.semant(cool-tree.java:1277)
+> 	at method.semant(cool-tree.java:651)
+> 	at Features.semant(cool-tree.java:123)
+> 	at class_c.semant(cool-tree.java:560)
+> 	at Classes.semant(cool-tree.java:63)
+> 	at programc.semant(cool-tree.java:423)
+> 	at Semant.main(Semant.java:36)

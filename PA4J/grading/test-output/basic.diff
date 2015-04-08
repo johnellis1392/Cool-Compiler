@@ -1,0 +1,12 @@
+24c24
+<         : Int
+---
+>         : SELF_TYPE
+34c34
+<         : String
+---
+>         : SELF_TYPE
+44c44
+<         : Bool
+---
+>         : SELF_TYPE

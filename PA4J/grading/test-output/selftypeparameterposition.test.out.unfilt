@@ -1,0 +1,36 @@
+#1
+_program
+  #1
+  _class
+    Main
+    Object
+    "./selftypeparameterposition.test"
+    (
+    #1
+    _method
+      main
+      Int
+      #1
+      _int
+        0
+      : Int
+    )
+  #1
+  _class
+    A
+    Object
+    "./selftypeparameterposition.test"
+    (
+    #1
+    _method
+      foo
+      #1
+      _formal
+        x
+        SELF_TYPE
+      Object
+      #1
+      _object
+        x
+      : SELF_TYPE
+    )

@@ -1,0 +1,56 @@
+
+_program
+
+  _class
+    Main
+    Object
+    filename
+    (
+
+    _method
+      main
+      Object
+
+      _block
+
+        _dispatch
+
+          _int
+            5
+          : Int
+          copy
+          (
+          )
+        : SELF_TYPE
+
+        _dispatch
+
+          _string
+            "test"
+          : String
+          copy
+          (
+          )
+        : SELF_TYPE
+
+        _dispatch
+
+          _bool
+            1
+          : Bool
+          copy
+          (
+          )
+        : SELF_TYPE
+
+        _dispatch
+
+          _string
+            "test"
+          : String
+          length
+          (
+          )
+        : Int
+      : Int
+    )

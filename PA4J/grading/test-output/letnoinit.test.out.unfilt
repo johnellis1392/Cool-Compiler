@@ -1,0 +1,2 @@
+./letnoinit.test:1: Reference to non-existant object: x
+Compilation halted due to static semantic errors.

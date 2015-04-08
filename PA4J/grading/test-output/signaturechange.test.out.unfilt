@@ -1,0 +1,66 @@
+#1
+_program
+  #1
+  _class
+    Main
+    Object
+    "./signaturechange.test"
+    (
+    #1
+    _method
+      main
+      Int
+      #1
+      _int
+        0
+      : Int
+    )
+  #1
+  _class
+    A
+    Object
+    "./signaturechange.test"
+    (
+    #1
+    _attr
+      x
+      String
+      #1
+      _no_expr
+      : _no_type
+    #1
+    _method
+      foo
+      #1
+      _formal
+        x
+        A
+      A
+      #1
+      _object
+        x
+      : A
+    )
+  #1
+  _class
+    B
+    A
+    "./signaturechange.test"
+    (
+    #1
+    _method
+      foo
+      #1
+      _formal
+        x
+        A
+      #1
+      _formal
+        y
+        A
+      A
+      #1
+      _object
+        self
+      : SELF_TYPE
+    )

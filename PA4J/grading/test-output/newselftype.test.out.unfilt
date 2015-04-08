@@ -1,0 +1,3 @@
+./newselftype.test:1: Invalid class type: SELF_TYPE
+./newselftype.test:1: Illegal argument: Expected A, Found Object
+Compilation halted due to static semantic errors.

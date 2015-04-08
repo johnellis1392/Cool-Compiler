@@ -1,0 +1,13 @@
+Grading .....
+make: Entering directory `/usr/class/cs143/cool/assignments/PA3J'
+make: `parser' is up to date.
+make: Leaving directory `/usr/class/cs143/cool/assignments/PA3J'
+=====================================================================
+submission: ..
+
+=====================================================================
+You got a score of 70 out of 70.
+
+Submit code: 
+70:7cbbc409ec990f19c78c75bd1e06f215
+

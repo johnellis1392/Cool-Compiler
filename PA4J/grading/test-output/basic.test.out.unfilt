@@ -1,0 +1,56 @@
+#1
+_program
+  #1
+  _class
+    Main
+    Object
+    "./basic.test"
+    (
+    #1
+    _method
+      main
+      Object
+      #1
+      _block
+        #1
+        _dispatch
+          #1
+          _int
+            5
+          : Int
+          copy
+          (
+          )
+        : SELF_TYPE
+        #1
+        _dispatch
+          #1
+          _string
+            "test"
+          : String
+          copy
+          (
+          )
+        : SELF_TYPE
+        #1
+        _dispatch
+          #1
+          _bool
+            1
+          : Bool
+          copy
+          (
+          )
+        : SELF_TYPE
+        #1
+        _dispatch
+          #1
+          _string
+            "test"
+          : String
+          length
+          (
+          )
+        : Int
+      : Int
+    )

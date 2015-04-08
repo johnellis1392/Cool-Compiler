@@ -1,0 +1,80 @@
+1,2c1,76
+< filename:line
+< Compilation halted due to static semantic errors.
+---
+> 
+> _program
+> 
+>   _class
+>     Main
+>     Object
+>     filename
+>     (
+> 
+>     _method
+>       main
+>       Int
+> 
+>       _int
+>         0
+>       : Int
+>     )
+> 
+>   _class
+>     A
+>     Object
+>     filename
+>     (
+>     )
+> 
+>   _class
+>     B
+>     A
+>     filename
+>     (
+>     )
+> 
+>   _class
+>     C
+>     B
+>     filename
+>     (
+>     )
+> 
+>   _class
+>     D
+>     Object
+>     filename
+>     (
+> 
+>     _method
+>       inky
+> 
+>       _formal
+>         b
+>         B
+>       Object
+> 
+>       _int
+>         1
+>       : Int
+>     )
+> 
+>   _class
+>     E
+>     D
+>     filename
+>     (
+> 
+>     _method
+>       inky
+> 
+>       _formal
+>         b
+>         C
+>       Object
+> 
+>       _int
+>         1
+>       : Int
+>     )

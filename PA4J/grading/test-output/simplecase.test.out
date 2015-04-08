@@ -1,0 +1,69 @@
+
+_program
+
+  _class
+    Main
+    Object
+    filename
+    (
+
+    _method
+      main
+      Int
+
+      _int
+        0
+      : Int
+    )
+
+  _class
+    A
+    Object
+    filename
+    (
+
+    _attr
+      moo
+      Object
+
+      _no_expr
+      : _no_type
+
+    _method
+      boo
+      Object
+
+      _block
+
+        _typcase
+
+          _object
+            moo
+          : Object
+
+          _branch
+            i
+            Int
+
+            _object
+              i
+            : _no_type
+
+          _branch
+            b
+            Bool
+
+            _object
+              b
+            : _no_type
+
+          _branch
+            s
+            String
+
+            _object
+              s
+            : _no_type
+        : _no_type
+      : _no_type
+    )

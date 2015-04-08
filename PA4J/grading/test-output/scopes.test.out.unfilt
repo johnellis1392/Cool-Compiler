@@ -1,0 +1,2 @@
+./scopes.test:1: Illegal argument: Expected Bool, Found Int
+Compilation halted due to static semantic errors.

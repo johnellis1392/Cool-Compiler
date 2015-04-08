@@ -1,0 +1,57 @@
+#1
+_program
+  #1
+  _class
+    Main
+    Object
+    "./redefinedclass.test"
+    (
+    #1
+    _method
+      main
+      Int
+      #1
+      _int
+        0
+      : Int
+    )
+  #1
+  _class
+    A
+    Object
+    "./redefinedclass.test"
+    (
+    #1
+    _attr
+      x
+      String
+      #1
+      _no_expr
+      : _no_type
+    #1
+    _method
+      foo
+      #1
+      _formal
+        x
+        Int
+      Object
+      #1
+      _loop
+        #1
+        _bool
+          1
+        : Bool
+        #1
+        _object
+          x
+        : Int
+      : Int
+    )
+  #1
+  _class
+    A
+    Object
+    "./redefinedclass.test"
+    (
+    )
