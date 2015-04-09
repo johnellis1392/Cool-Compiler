@@ -1,9 +1,3 @@
-/**
- * John Ellis
- * Ted Krovetz
- * 3/7/2015
- * CSC 151; Assignment 2
- */
 
 import java_cup.runtime.*;
 
