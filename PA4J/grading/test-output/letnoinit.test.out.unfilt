@@ -1,2 +1,28 @@
-./letnoinit.test:1: Reference to non-existant object: x
-Compilation halted due to static semantic errors.
+#1
+_program
+  #1
+  _class
+    Main
+    IO
+    "./letnoinit.test"
+    (
+    #1
+    _method
+      main
+      Object
+      #1
+      _block
+        #1
+        _let
+          x
+          Int
+          #1
+          _no_expr
+          : Int
+          #1
+          _object
+            x
+          : Int
+        : Int
+      : Int
+    )

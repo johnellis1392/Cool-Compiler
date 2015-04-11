@@ -1,0 +1,28 @@
+#1
+_program
+  #1
+  _class
+    Main
+    IO
+    "./initwithself.test"
+    (
+    #1
+    _attr
+      x
+      Main
+      #1
+      _object
+        self
+      : Main
+    #1
+    _method
+      main
+      Object
+      #1
+      _block
+        #1
+        _object
+          self
+        : Main
+      : Main
+    )

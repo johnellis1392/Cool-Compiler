@@ -1,0 +1,47 @@
+
+_program
+
+  _class
+    Main
+    Object
+    filename
+    (
+
+    _method
+      main
+      Int
+
+      _int
+        0
+      : Int
+    )
+
+  _class
+    A
+    Object
+    filename
+    (
+
+    _method
+      foo
+      Int
+
+      _block
+
+        _object
+          self
+        : A
+
+        _string
+          "hello"
+        : String
+
+        _bool
+          1
+        : Bool
+
+        _int
+          1
+        : Int
+      : Int
+    )

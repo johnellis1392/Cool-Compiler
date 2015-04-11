@@ -997,6 +997,8 @@ class assign extends Expression {
 		.println("Assignment to non-existent variable "
 			 + name);
 
+	    set_type(TreeConstants.Object_);
+
 	} else if(!classTable.isSupertypeOf(classTable.getTypeOf(a), 
 					    expr.get_type())) {
 

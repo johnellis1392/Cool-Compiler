@@ -1,0 +1,90 @@
+#1
+_program
+  #1
+  _class
+    Main
+    Object
+    "./cycleinmethods.test"
+    (
+    #1
+    _method
+      main
+      Int
+      #1
+      _int
+        0
+      : Int
+    )
+  #1
+  _class
+    A
+    Object
+    "./cycleinmethods.test"
+    (
+    #1
+    _method
+      f
+      #1
+      _formal
+        a
+        Int
+      Int
+      #1
+      _dispatch
+        #1
+        _object
+          self
+        : A
+        g
+        (
+        #1
+        _int
+          0
+        : Int
+        )
+      : Int
+    #1
+    _method
+      g
+      #1
+      _formal
+        a
+        Int
+      Int
+      #1
+      _dispatch
+        #1
+        _object
+          self
+        : A
+        h
+        (
+        #1
+        _int
+          0
+        : Int
+        )
+      : Int
+    #1
+    _method
+      h
+      #1
+      _formal
+        a
+        Int
+      Int
+      #1
+      _dispatch
+        #1
+        _object
+          self
+        : A
+        f
+        (
+        #1
+        _int
+          0
+        : Int
+        )
+      : Int
+    )

@@ -1,108 +1,16 @@
-1,104c1,2
-< 
-< _program
-< 
-<   _class
-<     Main
-<     Object
-<     filename
-<     (
-< 
-<     _method
-<       main
-<       Int
-< 
-<       _int
-<         0
-<       : Int
-<     )
-< 
-<   _class
-<     A
-<     Object
-<     filename
-<     (
-< 
-<     _attr
-<       x
-<       Int
-< 
-<       _no_expr
-<       : _no_type
-< 
-<     _method
-<       f
-< 
-<       _formal
-<         x
-<         A
-<       String
-< 
-<       _string
-<         "ab"
-<       : String
-< 
-<     _method
-<       g
-< 
-<       _formal
-<         x
-<         Bool
-<       A
-< 
-<       _object
-<         self
+54c54
 <       : SELF_TYPE
-< 
-<     _method
-<       h
-<       Object
-< 
-<       _let
-<         x
-<         String
-< 
-<         _dispatch
-< 
-<           _object
-<             self
-<           : SELF_TYPE
-<           f
-<           (
-< 
-<           _let
-<             x
-<             Bool
-< 
-<             _no_expr
-<             : _no_type
-< 
-<             _dispatch
-< 
-<               _object
-<                 self
-<               : SELF_TYPE
-<               g
-<               (
-< 
-<               _object
-<                 x
-<               : Bool
-<               )
-<             : A
-<           : A
-<           )
-<         : String
-< 
-<         _assign
-<           x
-< 
-<           _string
-<             "ab"
-<           : String
-<         : String
-<       : String
-<     )
 ---
-> filename:line
-> Compilation halted due to static semantic errors.
+>       : A
+68c68
+<           : SELF_TYPE
+---
+>           : A
+77c77
+<             : _no_type
+---
+>             : Bool
+83c83
+<               : SELF_TYPE
+---
+>               : A

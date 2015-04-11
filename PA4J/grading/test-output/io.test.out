@@ -1,0 +1,86 @@
+
+_program
+
+  _class
+    Main
+    IO
+    filename
+    (
+
+    _attr
+      x
+      Int
+
+      _no_expr
+      : _no_type
+
+    _attr
+      y
+      String
+
+      _no_expr
+      : _no_type
+
+    _method
+      main
+      Object
+
+      _block
+
+        _dispatch
+
+          _object
+            self
+          : Main
+          out_string
+          (
+
+          _string
+            "test"
+          : String
+          )
+        : SELF_TYPE
+
+        _dispatch
+
+          _object
+            self
+          : Main
+          out_int
+          (
+
+          _int
+            5
+          : Int
+          )
+        : SELF_TYPE
+
+        _assign
+          y
+
+          _dispatch
+
+            _object
+              self
+            : Main
+            in_string
+            (
+            )
+          : String
+        : String
+
+        _assign
+          x
+
+          _dispatch
+
+            _object
+              self
+            : Main
+            in_int
+            (
+            )
+          : Int
+        : Int
+      : Int
+    )

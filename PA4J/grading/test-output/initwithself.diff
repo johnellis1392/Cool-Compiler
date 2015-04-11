@@ -1,0 +1,10 @@
+16c16
+<       : SELF_TYPE
+---
+>       : Main
+26,27c26,27
+<         : SELF_TYPE
+<       : SELF_TYPE
+---
+>         : Main
+>       : Main

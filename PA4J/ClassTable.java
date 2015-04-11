@@ -31,6 +31,7 @@ class ClassTable {
     };
 
     {
+	// Initialize illegal identifiers
 	illegalIdentifiers = new Vector<AbstractSymbol>();
 	for(AbstractSymbol a: ClassTable.illegalIdentifierSymbols) {
 	    illegalIdentifiers.add(a);

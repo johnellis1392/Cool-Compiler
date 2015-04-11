@@ -1,0 +1,47 @@
+#1
+_program
+  #1
+  _class
+    Main
+    Object
+    "./expressionblock.test"
+    (
+    #1
+    _method
+      main
+      Int
+      #1
+      _int
+        0
+      : Int
+    )
+  #1
+  _class
+    A
+    Object
+    "./expressionblock.test"
+    (
+    #1
+    _method
+      foo
+      Int
+      #1
+      _block
+        #1
+        _object
+          self
+        : A
+        #1
+        _string
+          "hello"
+        : String
+        #1
+        _bool
+          1
+        : Bool
+        #1
+        _int
+          1
+        : Int
+      : Int
+    )

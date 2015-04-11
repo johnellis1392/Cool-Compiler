@@ -2,7 +2,7 @@ java.lang.NullPointerException
 	at ClassTable.isSupertypeOf(ClassTable.java:406)
 	at ClassTable.lub(ClassTable.java:415)
 	at ClassTable.lub(ClassTable.java:410)
-	at cond.semant(cool-tree.java:1277)
+	at cond.semant(cool-tree.java:1279)
 	at method.semant(cool-tree.java:651)
 	at Features.semant(cool-tree.java:123)
 	at class_c.semant(cool-tree.java:560)

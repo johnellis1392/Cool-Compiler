@@ -1,11 +1,37 @@
-./letselftype.test:1: Reference to non-existant object: x
-java.lang.NullPointerException
-	at let.semant(cool-tree.java:1516)
-	at Expressions.semant(cool-tree.java:307)
-	at block.semant(cool-tree.java:1438)
-	at method.semant(cool-tree.java:651)
-	at Features.semant(cool-tree.java:123)
-	at class_c.semant(cool-tree.java:560)
-	at Classes.semant(cool-tree.java:63)
-	at programc.semant(cool-tree.java:423)
-	at Semant.main(Semant.java:36)
+#1
+_program
+  #1
+  _class
+    Main
+    IO
+    "./letselftype.test"
+    (
+    #1
+    _method
+      main
+      Object
+      #1
+      _block
+        #1
+        _let
+          y
+          SELF_TYPE
+          #1
+          _let
+            x
+            SELF_TYPE
+            #1
+            _no_expr
+            : SELF_TYPE
+            #1
+            _object
+              x
+            : SELF_TYPE
+          : SELF_TYPE
+          #1
+          _object
+            y
+          : SELF_TYPE
+        : SELF_TYPE
+      : SELF_TYPE
+    )

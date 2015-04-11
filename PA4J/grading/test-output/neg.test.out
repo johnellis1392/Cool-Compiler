@@ -1,0 +1,51 @@
+
+_program
+
+  _class
+    Main
+    IO
+    filename
+    (
+
+    _attr
+      x
+      Bool
+
+      _no_expr
+      : _no_type
+
+    _method
+      main
+      Object
+
+      _block
+
+        _neg
+
+          _int
+            7
+          : Int
+        : Int
+
+        _neg
+
+          _dispatch
+
+            _object
+              self
+            : Main
+            foo
+            (
+            )
+          : Int
+        : Int
+      : Int
+
+    _method
+      foo
+      Int
+
+      _int
+        4
+      : Int
+    )

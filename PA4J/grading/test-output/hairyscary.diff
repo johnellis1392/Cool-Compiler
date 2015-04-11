@@ -448,10 +448,10 @@
 <     )
 ---
 > java.lang.NullPointerException
-> 	at plus.semant(cool-tree.java:1587)
-> 	at plus.semant(cool-tree.java:1584)
-> 	at plus.semant(cool-tree.java:1584)
-> 	at plus.semant(cool-tree.java:1584)
+> 	at plus.semant(cool-tree.java:1592)
+> 	at plus.semant(cool-tree.java:1589)
+> 	at plus.semant(cool-tree.java:1589)
+> 	at plus.semant(cool-tree.java:1589)
 > 	at attr.semant(cool-tree.java:757)
 > 	at Features.semant(cool-tree.java:123)
 > 	at class_c.semant(cool-tree.java:560)

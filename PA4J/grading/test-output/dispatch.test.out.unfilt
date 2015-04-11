@@ -1,0 +1,94 @@
+#1
+_program
+  #1
+  _class
+    Main
+    Object
+    "./dispatch.test"
+    (
+    #1
+    _method
+      main
+      Object
+      #1
+      _int
+        42
+      : Int
+    )
+  #1
+  _class
+    A
+    Object
+    "./dispatch.test"
+    (
+    #1
+    _method
+      foo
+      #1
+      _formal
+        a
+        Int
+      #1
+      _formal
+        b
+        B
+      #1
+      _formal
+        c
+        A
+      #1
+      _formal
+        d
+        B
+      A
+      #1
+      _object
+        self
+      : A
+    )
+  #1
+  _class
+    B
+    A
+    "./dispatch.test"
+    (
+    #1
+    _method
+      moo
+      A
+      #1
+      _let
+        b
+        B
+        #1
+        _new
+          B
+        : B
+        #1
+        _dispatch
+          #1
+          _object
+            self
+          : B
+          foo
+          (
+          #1
+          _int
+            4
+          : Int
+          #1
+          _object
+            b
+          : B
+          #1
+          _object
+            b
+          : B
+          #1
+          _object
+            b
+          : B
+          )
+        : A
+      : A
+    )

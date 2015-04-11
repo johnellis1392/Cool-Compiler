@@ -1,0 +1,28 @@
+
+_program
+
+  _class
+    Main
+    IO
+    filename
+    (
+
+    _attr
+      x
+      Main
+
+      _object
+        self
+      : Main
+
+    _method
+      main
+      Object
+
+      _block
+
+        _object
+          self
+        : Main
+      : Main
+    )

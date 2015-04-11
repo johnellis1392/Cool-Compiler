@@ -1,0 +1,146 @@
+
+_program
+
+  _class
+    Main
+    Object
+    filename
+    (
+
+    _method
+      main
+      Int
+
+      _int
+        0
+      : Int
+    )
+
+  _class
+    A
+    Object
+    filename
+    (
+
+    _method
+      f
+      Int
+
+      _dispatch
+
+        _object
+          self
+        : A
+        f
+        (
+        )
+      : Int
+
+    _method
+      g
+
+      _formal
+        a
+        Int
+      Int
+
+      _dispatch
+
+        _object
+          self
+        : A
+        g
+        (
+
+        _dispatch
+
+          _object
+            self
+          : A
+          g
+          (
+
+          _dispatch
+
+            _object
+              self
+            : A
+            f
+            (
+            )
+          : Int
+          )
+        : Int
+        )
+      : Int
+
+    _method
+      h
+
+      _formal
+        a
+        Int
+
+      _formal
+        b
+        Int
+      Int
+
+      _dispatch
+
+        _object
+          self
+        : A
+        h
+        (
+
+        _dispatch
+
+          _object
+            self
+          : A
+          h
+          (
+
+          _int
+            0
+          : Int
+
+          _int
+            0
+          : Int
+          )
+        : Int
+
+        _dispatch
+
+          _object
+            self
+          : A
+          h
+          (
+
+          _dispatch
+
+            _object
+              self
+            : A
+            f
+            (
+            )
+          : Int
+
+          _dispatch
+
+            _object
+              self
+            : A
+            f
+            (
+            )
+          : Int
+          )
+        : Int
+        )
+      : Int
+    )
