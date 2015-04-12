@@ -65,7 +65,7 @@ _program
 
           _object
             self
-          : A
+          : SELF_TYPE
           f
           (
 
@@ -80,7 +80,7 @@ _program
 
               _object
                 self
-              : A
+              : SELF_TYPE
               g
               (
 

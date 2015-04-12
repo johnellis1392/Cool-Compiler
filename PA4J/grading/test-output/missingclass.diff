@@ -3,9 +3,9 @@
 < Compilation halted due to static semantic errors.
 ---
 > java.lang.NullPointerException
-> 	at ClassTable.checkInheritance(ClassTable.java:300)
-> 	at ClassTable.checkInheritance(ClassTable.java:300)
-> 	at ClassTable.checkInheritance(ClassTable.java:266)
-> 	at ClassTable.<init>(ClassTable.java:251)
-> 	at programc.semant(cool-tree.java:420)
+> 	at ClassTable.checkInheritance(ClassTable.java:309)
+> 	at ClassTable.checkInheritance(ClassTable.java:309)
+> 	at ClassTable.checkInheritance(ClassTable.java:275)
+> 	at ClassTable.<init>(ClassTable.java:260)
+> 	at programc.semant(cool-tree.java:488)
 > 	at Semant.main(Semant.java:36)

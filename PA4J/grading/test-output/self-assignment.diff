@@ -1,32 +1,6 @@
-1,28c1,8
-< 
-< _program
-< 
-<   _class
-<     Main
-<     IO
-<     filename
-<     (
-< 
-<     _attr
-<       x
-<       Main
-< 
-<       _object
-<         self
-<       : SELF_TYPE
-< 
-<     _method
-<       main
-<       Object
-< 
-<       _block
-< 
-<         _object
-<           self
-<         : SELF_TYPE
-<       : SELF_TYPE
-<     )
+1,2c1,8
+< filename:line
+< Compilation halted due to static semantic errors.
 ---
 > java.lang.NullPointerException
 > 	at ClassTable.isSubtypeOf(ClassTable.java:413)

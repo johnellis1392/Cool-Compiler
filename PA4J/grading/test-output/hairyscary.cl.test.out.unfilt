@@ -1,11 +1,4 @@
-java.lang.NullPointerException
-	at plus.semant(cool-tree.java:1592)
-	at plus.semant(cool-tree.java:1589)
-	at plus.semant(cool-tree.java:1589)
-	at plus.semant(cool-tree.java:1589)
-	at attr.semant(cool-tree.java:757)
-	at Features.semant(cool-tree.java:123)
-	at class_c.semant(cool-tree.java:560)
-	at Classes.semant(cool-tree.java:63)
-	at programc.semant(cool-tree.java:423)
-	at Semant.main(Semant.java:36)
+./hairyscary.cl.test:1: Illegal assignment: Razz = Foo
+./hairyscary.cl.test:1: Illegal assignment: Bar = Razz
+./hairyscary.cl.test:1: Illegal assignment: Foo = Bazz
+Compilation halted due to static semantic errors.

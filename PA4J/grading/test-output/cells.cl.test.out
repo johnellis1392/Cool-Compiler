@@ -1,12 +1,2 @@
-java.lang.NullPointerException
-	at ClassTable.isSubtypeOf(ClassTable.java:393)
-	at ClassTable.isSupertypeOf(ClassTable.java:402)
-	at assign.semant(cool-tree.java:1002)
-	at Expressions.semant(cool-tree.java:307)
-	at block.semant(cool-tree.java:1440)
-	at method.semant(cool-tree.java:651)
-	at Features.semant(cool-tree.java:123)
-	at class_c.semant(cool-tree.java:560)
-	at Classes.semant(cool-tree.java:63)
-	at programc.semant(cool-tree.java:423)
-	at Semant.main(Semant.java:36)
+filename:line
+Compilation halted due to static semantic errors.

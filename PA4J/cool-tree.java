@@ -63,6 +63,31 @@ class Classes extends ListNode {
 	    (e.nextElement()).semant(classTable);
 	}
     }
+
+    public boolean containsClass(AbstractSymbol symbol) {
+
+	for(Enumeration<class_c> e=getElements();
+	    e.hasMoreElements();) {
+	    if(e.nextElement().getName().equals(symbol)) {
+		return true;
+	    }
+	}
+
+	return false;
+    }
+
+    public boolean containsMethod(AbstractSymbol symbol) {
+
+	for(Enumeration<class_c> e=getElements();
+	    e.hasMoreElements();) {
+
+	    if(e.nextElement().containsMethod(symbol)) {
+		return true;
+	    }
+	}
+
+	return false;
+    }
 }
 
 
@@ -323,6 +348,7 @@ abstract class Case extends TreeNode {
 				SymbolTable methodTable,
 				ClassTable classTable,
 				class_c c);
+    public abstract AbstractSymbol get_type();
 }
 
 
@@ -363,6 +389,44 @@ class Cases extends ListNode {
 				     classTable,
 				     c);
 	}
+    }
+
+    public void checkTypes(SymbolTable objectTable,
+			   SymbolTable methodTable,
+			   ClassTable classTable,
+			   class_c c) {
+	Vector<AbstractSymbol> v = new Vector<AbstractSymbol>();
+
+	for(Enumeration<Case> e=getElements();
+	    e.hasMoreElements();) {
+	    AbstractSymbol _type = e.nextElement().get_type();
+
+	    if(v.contains(_type)) {
+		classTable.semantError(c.getFilename(), c)
+		    .println("Multiple cases for one type: " + 
+			     _type.getString());
+	    } else {
+		v.add(_type);
+	    }
+	}
+    }
+
+    public AbstractSymbol get_type(SymbolTable objectTable,
+				   SymbolTable methodTable,
+				   ClassTable classTable,
+				   class_c c) {
+
+	Enumeration<Case> e = getElements();
+	if(!e.hasMoreElements()) 
+	    return TreeConstants.No_type;
+
+	AbstractSymbol return_type = e.nextElement().get_type();
+	for(; e.hasMoreElements();) {
+	    return_type = classTable.lub(return_type,
+					 e.nextElement().get_type());
+	}
+
+	return return_type;
     }
 }
 
@@ -415,12 +479,25 @@ class programc extends Program {
     */
     public void semant() {
 
+	if(ClassTable.DEBUG) {
+	    System.out.println("Analyzing Program...");
+	}
+
 	// Checking class inheritance heirarchy is deferred to
 	// ClassTable 
 	ClassTable classTable = new ClassTable(classes);
 	
 	// Analyze class list
 	classes.semant(classTable);
+
+	if(!classes.containsClass(TreeConstants.Main)) {
+	    classTable.semantError()
+		.println("Class Main is not defined.");
+
+	} else if(!classes.containsMethod(TreeConstants.main_meth)) {
+	    classTable.semantError()
+		.println("Method main is not defined.");
+	}
 
 	if (classTable.errors()) {
 	    System.err.println("Compilation halted due to static semantic errors.");
@@ -537,6 +614,12 @@ class class_c extends Class_ {
      */
     public void semant(ClassTable classTable) {
 
+	if(ClassTable.DEBUG) {
+	    System.out.println("-Class: " + 
+			       name.getString() + ", " + 
+			       getLineNumber());
+	}
+
 	if(classTable.checkIllegalIdentifier(name)) {
 	    classTable.semantError(getFilename(), this)
 		.println("Illegal class Identifier " + name);
@@ -579,6 +662,21 @@ class class_c extends Class_ {
      */
     public Feature getFeature(AbstractSymbol featureName) {
 	return features.getFeature(featureName);
+    }
+
+    public boolean containsMethod(AbstractSymbol symbol) {
+	
+	for(Enumeration<Feature> e=features.getElements();
+	    e.hasMoreElements();) {
+
+	    Feature f = e.nextElement();
+	    if(f instanceof method &&
+	       f.getName().equals(symbol)) {
+		return true;
+	    }
+	}
+
+	return false;
     }
 }
 
@@ -633,6 +731,13 @@ class method extends Feature {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("--Method: " + 
+			       name.getString() + ", " + 
+			       getLineNumber());
+	}
+
 	objectTable.enterScope();
 
 	// Check for illegal method names
@@ -653,6 +758,22 @@ class method extends Feature {
 		    classTable,
 		    c);
 
+	if(expr.get_type().equals(TreeConstants.self) ||
+	   expr.get_type().equals(TreeConstants.SELF_TYPE)) {
+	    expr.set_type(c.getName());
+	}
+
+	if(!classTable.isSubtypeOf(expr.get_type(), 
+				   return_type)) {
+
+	    classTable.semantError(c.getFilename(), c)
+		.println("Inferred return type " + 
+			 expr.get_type().getString() + 
+			 " of method " + name.getString() + 
+			 " does not conform to declared type " + 
+			 return_type.getString());
+	}
+
 	objectTable.exitScope();
     }
 
@@ -672,6 +793,7 @@ class method extends Feature {
 			   SymbolTable methodTable,
 			   ClassTable classTable,
 			   class_c c) {
+
 	// If method already exists in scope, report error
 	if(methodTable.probe(name) != null) {
 	    classTable.semantError(c.getFilename(), c)
@@ -748,6 +870,14 @@ class attr extends Feature {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("--Attribute: " +
+			       name.getString() + ", " + 
+			       type_decl.getString() + ", " + 
+			       getLineNumber());
+	}
+
 	// Check for illegal name of attribute
 	if(classTable.checkIllegalIdentifier(name)) {
 	    classTable.semantError(c.getFilename(), c)
@@ -758,6 +888,19 @@ class attr extends Feature {
 		    methodTable,
 		    classTable,
 		    c);
+
+	objectTable.addId(name, this);
+
+	if(!classTable.isSubtypeOf(init.get_type(), 
+				   type_decl)) {
+
+	    classTable.semantError(c.getFilename(), c)
+		.println("Illegal assignment: " + 
+			 type_decl.getString() + " = " + 
+			 init.get_type().getString());
+
+	    init.set_type(TreeConstants.Object_);
+	}
     }
 
     public AbstractSymbol get_type() {
@@ -771,6 +914,7 @@ class attr extends Feature {
 			   SymbolTable methodTable,
 			   ClassTable classTable,
 			   class_c c) {
+
 	// Check if attr is already defined in current scope
 	if(objectTable.lookup(name) != null) {
 	    classTable.semantError(c.getFilename(), c)
@@ -829,11 +973,25 @@ class formalc extends Formal {
 		       ClassTable classTable,
 		       class_c c) {
 
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Formal: "
+			       + name.getString() + ", " + 
+			       getLineNumber());
+	}
+
 	// Check for illegal name
 	if(classTable.checkIllegalIdentifier(name)) {
 	    classTable.semantError(c.getFilename(), c)
 		.println("Illegal name for formal argument "
 			 + name.getString());
+	}
+
+	if(type_decl.equals(TreeConstants.self) ||
+	   type_decl.equals(TreeConstants.SELF_TYPE)) {
+	    
+	    classTable.semantError(c.getFilename(), c)
+		.println("Illegal type for parameter: "
+			 + type_decl.getString());
 	}
 
 	// If item already exists, throw multiply defined error
@@ -858,6 +1016,7 @@ class formalc extends Formal {
     public void compareArg(Expression expression,
 			   ClassTable classTable,
 			   class_c c) {
+
 	// Check if passed argument is a SELF_TYPE
 	if(expression.get_type().equals(TreeConstants.self) ||
 	   expression.get_type().equals(TreeConstants.SELF_TYPE)) {
@@ -919,6 +1078,13 @@ class branch extends Case {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Branch: " + 
+			       name.getString() + ", " + 
+			       getLineNumber());
+	}
+
 	if(classTable.checkIllegalIdentifier(name)) {
 	    classTable.semantError(c.getFilename(), c);
 	}
@@ -981,6 +1147,12 @@ class assign extends Expression {
 		       ClassTable classTable,
 		       class_c c) {
 
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Assignment: " + 
+			       name.getString() + ", " + 
+			       getLineNumber());
+	}
+
 	// Cannot assign to illegal identifier
 	if(classTable.checkIllegalIdentifier(name)) {
 	    classTable.semantError(c.getFilename(), c);
@@ -988,6 +1160,7 @@ class assign extends Expression {
 
 	// Evaluate expression first
 	expr.semant(objectTable, methodTable, classTable, c);
+	
 
 	// Check that identifier exists
 	Object a = objectTable.lookup(name);
@@ -995,12 +1168,12 @@ class assign extends Expression {
 	if(a == null) {
 	    classTable.semantError(c.getFilename(), c)
 		.println("Assignment to non-existent variable "
-			 + name);
+			 + name.getString());
 
 	    set_type(TreeConstants.Object_);
 
-	} else if(!classTable.isSupertypeOf(classTable.getTypeOf(a), 
-					    expr.get_type())) {
+	} else if(!classTable.isSubtypeOf(expr.get_type(),
+					  classTable.getTypeOf(a))) {
 
 	    classTable.semantError(c.getFilename(), c)
 		.println("Assignment to illegal type: "
@@ -1068,6 +1241,12 @@ class static_dispatch extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Static Dispatch: " + 
+			       name.getString());
+	}
+
 	// Remember: <expr>@<type>.<id>(<actual>);
 	// Evaluate expression that static method is called on
 	expr.semant(objectTable, 
@@ -1087,7 +1266,7 @@ class static_dispatch extends Expression {
 	}
 
 	// Check if method exists in scope of referenced object
-	if(classTable.getClass_c(type_name) instanceof class_c) {
+	if(classTable.getClass_c(type_name) != null) {
 	    Feature feature = classTable.getFeature
 		(type_name, name);
 
@@ -1100,11 +1279,14 @@ class static_dispatch extends Expression {
 			     + " is not of specified type "
 			     + type_name.getString());
 
+		set_type(TreeConstants.Object_);
+
 	    } else if(feature == null) {
 		// Check if called method exists
 		classTable.semantError(c.getFilename(), c)
 		    .println("Call to non-existent static method "
 			     + name);
+		set_type(TreeConstants.Object_);
 
 	    } else if(feature instanceof method) {
 		// Compare passed arguments of dispatch to
@@ -1114,17 +1296,23 @@ class static_dispatch extends Expression {
 			      classTable,
 			      c);
 
+		set_type(m.get_type());
+
 	    } else {
 		// Calling non-method feature
 		classTable.semantError(c.getFilename(), c)
 		    .println("Illegal dispatch to attribute: "
 			     + name.getString());
+
+		set_type(TreeConstants.Object_);
 	    }
 	} else {
 	    // Item which method was called on is not a class
 	    classTable.semantError(c.getFilename(), c)
 		.println("Illegal static dispatch to non-class object "
 			 + type_name);
+
+	    set_type(TreeConstants.Object_);
 	}
     }
 }
@@ -1178,6 +1366,12 @@ class dispatch extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Dispatch: " + 
+			       name.getString());
+	}
+
 	// Evaluate Expression
 	expr.semant(objectTable, 
 		    methodTable, 
@@ -1205,12 +1399,20 @@ class dispatch extends Expression {
 
 	    classTable.semantError(c.getFilename(), c)
 		.println("Call to non-existant method " + 
-			 name + " of class " + 
+			 name.getString() + " of class " + 
 			 expr.get_type().getString());
 
 	    set_type(TreeConstants.Object_);
 	} else {
-	    set_type(feature.get_type());
+	    
+	    AbstractSymbol new_type = feature.get_type();
+
+	    if(new_type.equals(TreeConstants.self) ||
+	       new_type.equals(TreeConstants.SELF_TYPE)) {
+		new_type = expr.get_type();
+	    }
+
+	    set_type(new_type);
 
 	    method m = (method) feature;
 	    m.compareArgs(actual, classTable, c);
@@ -1263,6 +1465,11 @@ class cond extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---If: " + getLineNumber());
+	}
+
 	// Evaluate component expressions
 	pred.semant(objectTable, methodTable, classTable, c);
 	then_exp.semant(objectTable, methodTable, classTable, c);
@@ -1321,6 +1528,12 @@ class loop extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Loop: " + 
+			       getLineNumber());
+	}
+
 	// Evaluate component expressions
 	pred.semant(objectTable, methodTable, classTable, c);
 	body.semant(objectTable, methodTable, classTable, c);
@@ -1379,6 +1592,12 @@ class typcase extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Case: " + 
+			       getLineNumber());
+	}
+
 	// Evaluate component expressions
 	expr.semant(objectTable, 
 		    methodTable, 
@@ -1391,9 +1610,17 @@ class typcase extends Expression {
 		     classTable,
 		     c);
 
+	cases.checkTypes(objectTable,
+			 methodTable,
+			 classTable,
+			 c);
+
 	// Type is the least upper bound of all expression
 	// branches in list
-	//set_type();
+	set_type(cases.get_type(objectTable,
+				methodTable,
+				classTable,
+				c));
     }
 }
 
@@ -1434,6 +1661,12 @@ class block extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Expression Block: " + 
+			       getLineNumber());
+	}
+
 	objectTable.enterScope();
 	
 	// Evaluate all expressions in body list
@@ -1501,6 +1734,11 @@ class let extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Let: " + 
+			       getLineNumber());
+	}
 
 	objectTable.enterScope();
 
@@ -1586,6 +1824,11 @@ class plus extends Expression {
 		       ClassTable classTable,
 		       class_c c) {
 
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Plus: " + 
+			       getLineNumber());
+	}
+
 	e1.semant(objectTable, methodTable, classTable, c);
 	e2.semant(objectTable, methodTable, classTable, c);
 
@@ -1644,6 +1887,12 @@ class sub extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Sub: " + 
+			       getLineNumber());
+	}
+
 	e1.semant(objectTable, methodTable, classTable, c);
 	e2.semant(objectTable, methodTable, classTable, c);
 
@@ -1702,6 +1951,12 @@ class mul extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Mul: " + 
+			       getLineNumber());
+	}
+
 	e1.semant(objectTable, methodTable, classTable, c);
 	e2.semant(objectTable, methodTable, classTable, c);
 
@@ -1760,6 +2015,12 @@ class divide extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Divide: " + 
+			       getLineNumber());
+	}
+
 	e1.semant(objectTable, methodTable, classTable, c);
 	e2.semant(objectTable, methodTable, classTable, c);
 
@@ -1811,6 +2072,12 @@ class neg extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Neg: " + 
+			       getLineNumber());
+	}
+
 	e1.semant(objectTable, methodTable, classTable, c);
 
 	if(!e1.get_type().equals(TreeConstants.Int)) {
@@ -1866,6 +2133,12 @@ class lt extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Less Than: " + 
+			       getLineNumber());
+	}
+
 	e1.semant(objectTable, methodTable, classTable, c);
 	e2.semant(objectTable, methodTable, classTable, c);
 
@@ -1924,6 +2197,12 @@ class eq extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Equals: " + 
+			       getLineNumber());
+	}
+
 	e1.semant(objectTable, methodTable, classTable, c);
 	e2.semant(objectTable, methodTable, classTable, c);
 
@@ -1977,6 +2256,12 @@ class leq extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Less Than Equals: " + 
+			       getLineNumber());
+	}
+
 	e1.semant(objectTable, methodTable, classTable, c);
 	e2.semant(objectTable, methodTable, classTable, c);
 
@@ -2030,6 +2315,12 @@ class comp extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("Complement: " + 
+			       getLineNumber());
+	}
+
 	e1.semant(objectTable, methodTable, classTable, c);
 
 	if(!e1.get_type().equals(TreeConstants.Bool)) {
@@ -2080,6 +2371,13 @@ class int_const extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+	
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Integer: " + 
+			       token.getString() + ", " + 
+			       getLineNumber());
+	}
+	
 	set_type(TreeConstants.Int);
     }
 }
@@ -2119,6 +2417,13 @@ class bool_const extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("Boolean: " + 
+			       val + ", " + 
+			       getLineNumber());
+	}
+
 	set_type(TreeConstants.Bool);
     }
 }
@@ -2160,6 +2465,13 @@ class string_const extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---String: " + 
+			       token.getString() + ", " + 
+			       getLineNumber());
+	}
+
 	set_type(TreeConstants.Str);
     }
 }
@@ -2199,6 +2511,12 @@ class new_ extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---New: " + 
+			       type_name.getString() + ", " +
+			       getLineNumber());
+	}
 
 	if(classTable.getClass_c(type_name) == null) {
 	    
@@ -2248,6 +2566,12 @@ class isvoid extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Isvoid: " + 
+			       getLineNumber());
+	}
+
 	e1.semant(objectTable, methodTable, classTable, c);
 
 	if(!e1.get_type().equals(TreeConstants.Bool)) {
@@ -2293,6 +2617,12 @@ class no_expr extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+	
+	if(ClassTable.DEBUG) {
+	    System.out.println("---No_Expr: " + 
+			       getLineNumber());
+	}
+
 	set_type(TreeConstants.No_type);
     }
 }
@@ -2332,17 +2662,27 @@ class object extends Expression {
 		       SymbolTable methodTable,
 		       ClassTable classTable,
 		       class_c c) {
+
+	if(ClassTable.DEBUG) {
+	    System.out.println("---Identifier: " + 
+			       name.getString() + ", " + 
+			       getLineNumber());
+	}
+
 	// Get reference to identifier in object scope
 	Object o = objectTable.lookup(name);
 	
 	if(name.equals(TreeConstants.self) ||
 	   name.equals(TreeConstants.SELF_TYPE)) {
 	    
-	    set_type(c.getName());
+	    //set_type(c.getName());
+	    set_type(TreeConstants.SELF_TYPE);
 	} else if(o == null) {
-	    // Refernced object does not exist
+	    // Referenced object does not exist
 	    classTable.semantError(c.getFilename(), c)
 		.println("Reference to non-existant object: " + name);
+
+	    set_type(TreeConstants.No_type);
 	} else {
 	    set_type(classTable.getTypeOf(o));
 	}

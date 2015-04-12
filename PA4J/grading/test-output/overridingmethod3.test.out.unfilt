@@ -1,2 +1,4 @@
+./overridingmethod3.test:1: Inferred return type A of method inky does not conform to declared type SELF_TYPE
 ./overridingmethod3.test:1: Invalid class type: SELF_TYPE
+./overridingmethod3.test:1: Inferred return type Object of method inky does not conform to declared type SELF_TYPE
 Compilation halted due to static semantic errors.

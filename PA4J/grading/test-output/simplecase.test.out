@@ -64,6 +64,6 @@ _program
             _object
               s
             : _no_type
-        : _no_type
-      : _no_type
+        : Object
+      : Object
     )

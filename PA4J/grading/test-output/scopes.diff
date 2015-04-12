@@ -2,15 +2,7 @@
 <       : SELF_TYPE
 ---
 >       : A
-68c68
-<           : SELF_TYPE
----
->           : A
 77c77
 <             : _no_type
 ---
 >             : Bool
-83c83
-<               : SELF_TYPE
----
->               : A

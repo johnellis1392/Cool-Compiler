@@ -1,28 +1,8 @@
-#1
-_program
-  #1
-  _class
-    Main
-    IO
-    "./initwithself.test"
-    (
-    #1
-    _attr
-      x
-      Main
-      #1
-      _object
-        self
-      : Main
-    #1
-    _method
-      main
-      Object
-      #1
-      _block
-        #1
-        _object
-          self
-        : Main
-      : Main
-    )
+java.lang.NullPointerException
+	at ClassTable.isSubtypeOf(ClassTable.java:413)
+	at attr.semant(cool-tree.java:894)
+	at Features.semant(cool-tree.java:148)
+	at class_c.semant(cool-tree.java:643)
+	at Classes.semant(cool-tree.java:63)
+	at programc.semant(cool-tree.java:491)
+	at Semant.main(Semant.java:36)

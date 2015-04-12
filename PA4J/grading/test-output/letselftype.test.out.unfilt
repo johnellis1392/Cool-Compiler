@@ -33,5 +33,5 @@ _program
             y
           : SELF_TYPE
         : SELF_TYPE
-      : SELF_TYPE
+      : Main
     )

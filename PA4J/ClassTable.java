@@ -21,6 +21,8 @@ class ClassTable {
     private Vector<class_c> classes;
     private HashMap<AbstractSymbol, class_c> classMap;
 
+    // Flag for debugging purposes
+    public static final boolean DEBUG = false;
 
     // List of all illegal identifiers
     private  Vector<AbstractSymbol> illegalIdentifiers;
@@ -242,7 +244,13 @@ class ClassTable {
 
 	    class_c c = e.nextElement();
 	    classes.add(c);
-	    classMap.put(c.getName(), c);
+	    Object o = classMap.put(c.getName(), c);
+
+	    if(o != null) {
+		semantError(c.getFilename(), c)
+		    .println("Class " + c.getName().getString() + 
+			     " was previously defined.");
+	    }
 	}
 
 
@@ -384,9 +392,20 @@ class ClassTable {
 
 
     public boolean isSubtypeOf(AbstractSymbol c1, AbstractSymbol c2) {
+
+	if(DEBUG) {
+	    System.out.println(c1.getString() + ", " + 
+			       c2.getString());
+	}
+
 	if(c1.equals(c2)) {
 	    // Found class
 	    return true;
+	} else if(c1.equals(TreeConstants.No_type)) {
+	    // No_type extends all other classes
+	    return true;
+	} else if(c2.equals(TreeConstants.No_type)) {
+	    return false;
 	} else if(c1.equals(TreeConstants.No_class)) {
 	    // Did not find class
 	    return false;
@@ -444,6 +463,7 @@ class ClassTable {
 
 
     public AbstractSymbol getTypeOf(Object o) {
+
 	if(o instanceof Feature) {
 	    return ((Feature) o).get_type();
 	} else if(o instanceof Formal) {
@@ -454,6 +474,7 @@ class ClassTable {
 	    return ((class_c) o).getName();
 	}
 
+	System.out.println("getTypeOf: " + o);
 	return null;
     }
 
