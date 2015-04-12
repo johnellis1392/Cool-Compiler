@@ -66,5 +66,5 @@
 > 
 >       _object
 >         self
->       : B
+>       : SELF_TYPE
 >     )

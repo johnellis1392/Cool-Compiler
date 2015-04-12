@@ -1,7 +1,7 @@
 java.lang.NullPointerException
-	at ClassTable.checkInheritance(ClassTable.java:309)
-	at ClassTable.checkInheritance(ClassTable.java:309)
-	at ClassTable.checkInheritance(ClassTable.java:275)
-	at ClassTable.<init>(ClassTable.java:260)
+	at ClassTable.checkInheritance(ClassTable.java:311)
+	at ClassTable.checkInheritance(ClassTable.java:311)
+	at ClassTable.checkInheritance(ClassTable.java:277)
+	at ClassTable.<init>(ClassTable.java:262)
 	at programc.semant(cool-tree.java:488)
 	at Semant.main(Semant.java:36)

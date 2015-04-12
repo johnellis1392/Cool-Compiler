@@ -62,5 +62,5 @@ _program
       #1
       _object
         self
-      : B
+      : SELF_TYPE
     )

@@ -2,7 +2,3 @@
 <         : _no_type
 ---
 >         : A
-56c56
-<       : SELF_TYPE
----
->       : B

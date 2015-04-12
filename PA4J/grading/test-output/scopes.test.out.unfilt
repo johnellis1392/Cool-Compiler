@@ -51,7 +51,7 @@ _program
       #1
       _object
         self
-      : A
+      : SELF_TYPE
     #1
     _method
       h

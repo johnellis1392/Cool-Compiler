@@ -625,6 +625,9 @@ class class_c extends Class_ {
 		.println("Illegal class Identifier " + name);
 	}
 
+	// Set the current class
+	classTable.setCurrentClass(name);
+
 	// Create a new item scope for holding local variables
 	SymbolTable objectTable = new SymbolTable();
 	SymbolTable methodTable = new SymbolTable();
@@ -758,11 +761,6 @@ class method extends Feature {
 		    classTable,
 		    c);
 
-	if(expr.get_type().equals(TreeConstants.self) ||
-	   expr.get_type().equals(TreeConstants.SELF_TYPE)) {
-	    expr.set_type(c.getName());
-	}
-
 	if(!classTable.isSubtypeOf(expr.get_type(), 
 				   return_type)) {
 
@@ -890,7 +888,7 @@ class attr extends Feature {
 		    c);
 
 	objectTable.addId(name, this);
-
+	
 	if(!classTable.isSubtypeOf(init.get_type(), 
 				   type_decl)) {
 
@@ -1153,19 +1151,21 @@ class assign extends Expression {
 			       getLineNumber());
 	}
 
-	// Cannot assign to illegal identifier
-	if(classTable.checkIllegalIdentifier(name)) {
-	    classTable.semantError(c.getFilename(), c);
-	}
+	
 
 	// Evaluate expression first
 	expr.semant(objectTable, methodTable, classTable, c);
 	
-
 	// Check that identifier exists
 	Object a = objectTable.lookup(name);
-	
-	if(a == null) {
+
+	// Cannot assign to illegal identifier
+	if(classTable.checkIllegalIdentifier(name)) {
+	    classTable.semantError(c.getFilename(), c)
+		.println("Cannot assign to 'self'.");
+
+	    set_type(TreeConstants.SELF_TYPE);
+	} else if(a == null) {
 	    classTable.semantError(c.getFilename(), c)
 		.println("Assignment to non-existent variable "
 			 + name.getString());

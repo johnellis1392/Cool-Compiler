@@ -1,7 +1,5 @@
 	-1 (cells)	 Complex program
-	-1 (dispatch)	 Simple dispatches
 	-1 (hairyscary)	 Messy legal Cool program
-	-1 (initwithself)	 Attribute initialized with self (legal)
 	-1 (letnoinit)	 Let without initialization (legal)
 	-1 (letselftype)	 Let with SELF_TYPE variables (legal)
 	-1 (list)	 List program
@@ -11,6 +9,6 @@
 	-1 (overridingmethod4)	 Illegal method override - different param types
 	-1 (signaturechange)	 Method override with different number of params
 	-1 (scopes)	 Scope test (legal)
-	-1 (self-assignment)	 Assignment to self (illegal)
+	-1 (selftypebadreturn)	 Non-conforming return type when SELF_TYPE is declared return type
 	-1 (simplecase)	 A simple case expr
 	-1 (subtypemethodreturn)	 Returning a subtype of the declared return type (legal)

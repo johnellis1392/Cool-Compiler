@@ -2,7 +2,3 @@
 <             : _no_type
 ---
 >             : SELF_TYPE
-36c36
-<       : SELF_TYPE
----
->       : Main

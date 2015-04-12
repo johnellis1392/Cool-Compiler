@@ -8,6 +8,8 @@ import java.util.Enumeration;
  * here to provide a container for the supplied methods.  */
 class ClassTable {
 
+    // Current class; used for self-type completions
+    private AbstractSymbol currentClass;
 
     private int semantErrors;
     private PrintStream errorStream;
@@ -409,6 +411,12 @@ class ClassTable {
 	} else if(c1.equals(TreeConstants.No_class)) {
 	    // Did not find class
 	    return false;
+	} else if(isSelfType(c1)) {
+	    // Replace class if it is a self type
+	    return isSubtypeOf(getCurrentClass(), c2);
+	} else if(isSelfType(c2)) {
+	    // Replace class if it is a self type
+	    return isSubtypeOf(c1, getCurrentClass());
 	} else {
 	    return isSubtypeOf(getClass_c(c1).getParent(), c2);
 	}
@@ -501,6 +509,19 @@ class ClassTable {
 	} else {
 	    return true;
 	}
+    }
+
+    public boolean isSelfType(AbstractSymbol symbol) {
+	return TreeConstants.self.equals(symbol) ||
+	    TreeConstants.SELF_TYPE.equals(symbol);
+    }
+
+    public void setCurrentClass(AbstractSymbol symbol) {
+	this.currentClass = symbol;
+    }
+
+    public AbstractSymbol getCurrentClass() {
+	return this.currentClass;
     }
 }
 
