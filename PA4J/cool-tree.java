@@ -772,6 +772,50 @@ class method extends Feature {
 			 return_type.getString());
 	}
 
+	if(classTable.getFeature(c.getParent(), name) != null) {
+	    // Method is overriding superclass method
+	    
+	    method m = (method) classTable.getFeature(c.getParent(), name);
+	    
+	    if(!m.get_type().equals(return_type)) {
+		// Check return types are the same
+		
+		classTable.semantError(c.getFilename(), c)
+		    .println("Overriding method " + name.getString() + 
+			     " has unexpected return type " + 
+			     return_type.getString());
+		return;
+
+	    } else if(m.getFormals().getLength() != formals.getLength()) {
+		// Check argument lists are the same length
+
+		classTable.semantError(c.getFilename(), c)
+		    .println("Differing lengths to formal params in "
+			     + " overriding method " + name.getString());
+		return;
+
+	    } else {
+		// Check types of overriding parameter list
+
+		Formals f = m.getFormals();
+		Enumeration<Formal> e1 = f.getElements();
+		Enumeration<Formal> e2 = formals.getElements();
+
+		for(; e1.hasMoreElements() && e2.hasMoreElements();) {
+		    AbstractSymbol t1 = e1.nextElement().get_type();
+		    AbstractSymbol t2 = e2.nextElement().get_type();
+
+		    if(!t1.equals(t2)) {
+			classTable.semantError(c.getFilename(), c)
+			    .println("Illegal argument in overriding method "
+				     + name.getString() + " Expected "
+				     + t1.getString() + ", Found " 
+				     + t2.getString());
+		    }
+		}
+	    }
+	}
+	    
 	objectTable.exitScope();
     }
 
@@ -798,8 +842,10 @@ class method extends Feature {
 	    classTable.semantError(c.getFilename(), c)
 		.println("Illegal identifier: multiply defined method "
 			 + name.getString());
+	    return;
+	} 
 
-	} else if(classTable.isSelfType(return_type)) {
+	if(classTable.isSelfType(return_type)) {
 	    methodTable.addId(name, c.getName());
 	} else {
 	    methodTable.addId(name, return_type);
@@ -826,6 +872,10 @@ class method extends Feature {
 	formals.compareArgs(expressions,
 			    classTable,
 			    c);
+    }
+
+    public Formals getFormals() {
+	return this.formals;
     }
 }
 
@@ -1411,7 +1461,8 @@ class dispatch extends Expression {
 
 	    if(classTable.isSelfType(m.get_type())) {
 		if(classTable.isSelfType(expr.get_type())) {
-		    set_type(c.getName());
+		    //set_type(c.getName());
+		    set_type(TreeConstants.SELF_TYPE);
 		} else {
 		    set_type(expr.get_type());
 		}

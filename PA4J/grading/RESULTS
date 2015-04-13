@@ -1,7 +1,4 @@
 	-1 (cells)	 Complex program
 	-1 (hairyscary)	 Messy legal Cool program
-	-1 (io)	 IO methods
 	-1 (list)	 List program
-	-1 (overridingmethod4)	 Illegal method override - different param types
-	-1 (signaturechange)	 Method override with different number of params
 	-1 (selftypebadreturn)	 Non-conforming return type when SELF_TYPE is declared return type

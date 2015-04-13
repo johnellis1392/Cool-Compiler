@@ -65,7 +65,7 @@ _program
             )
           : String
           )
-        : CellularAutomaton
+        : SELF_TYPE
         #1
         _object
           self

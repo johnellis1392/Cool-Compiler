@@ -1,7 +1,3 @@
-68c68
-<         : SELF_TYPE
----
->         : CellularAutomaton
 475c475
 <               : Object
 ---

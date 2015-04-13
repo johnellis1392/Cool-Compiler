@@ -209,7 +209,7 @@ _program
             "\n"
           : String
           )
-        : Main
+        : SELF_TYPE
         #1
         _block
           #1
@@ -231,7 +231,7 @@ _program
               )
             : Int
             )
-          : Main
+          : SELF_TYPE
           #1
           _dispatch
             #1
@@ -245,7 +245,7 @@ _program
               " "
             : String
             )
-          : Main
+          : SELF_TYPE
           #1
           _dispatch
             #1
