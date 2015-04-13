@@ -2,8 +2,6 @@
 	-1 (hairyscary)	 Messy legal Cool program
 	-1 (io)	 IO methods
 	-1 (list)	 List program
-	-1 (newselftype)	 Using a new SELF_TYPE expression (legal)
-	-1 (overridingmethod3)	 Method override example with SELF_TYPE
 	-1 (overridingmethod4)	 Illegal method override - different param types
 	-1 (signaturechange)	 Method override with different number of params
 	-1 (selftypebadreturn)	 Non-conforming return type when SELF_TYPE is declared return type

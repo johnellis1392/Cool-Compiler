@@ -2586,7 +2586,7 @@ class new_ extends Expression {
 	}
 
 	if(classTable.isSelfType(type_name)) {
-	    set_type(c.getName());
+	    set_type(TreeConstants.SELF_TYPE);
 
 	} else if(classTable.getClass_c(type_name) == null) {
 	    
