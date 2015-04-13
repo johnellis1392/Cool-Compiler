@@ -1,4 +1,0 @@
-./hairyscary.cl.test:1: Illegal assignment: Razz = Foo
-./hairyscary.cl.test:1: Illegal assignment: Bar = Razz
-./hairyscary.cl.test:1: Illegal assignment: Foo = Bazz
-Compilation halted due to static semantic errors.

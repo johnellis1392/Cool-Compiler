@@ -420,11 +420,11 @@ class ClassTable {
 	} else if(isSelfType(c1)) {
 	    // Replace class if it is a self type
 	    return isSubtypeOf(getCurrentClass(), c2);
-	} else if(isSelfType(c2)) {
+	    //	} else if(isSelfType(c2)) {
 	    // Replace class if it is a self type
-	    return isSubtypeOf(c1, getCurrentClass());
+	    //return isSubtypeOf(c1, getCurrentClass());
 	} else {
-	    return isSubtypeOf(getClass_c(c1).getParent(), c2);
+	    return isSubtypeOf(getParent(c1), c2);
 	}
     }
 

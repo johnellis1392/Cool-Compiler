@@ -405,6 +405,8 @@ class Cases extends ListNode {
 		classTable.semantError(c.getFilename(), c)
 		    .println("Multiple cases for one type: " + 
 			     _type.getString());
+		// } else if(!classTable.isSubtypeOf()) {
+		
 	    } else {
 		v.add(_type);
 	    }
@@ -414,16 +416,37 @@ class Cases extends ListNode {
     public AbstractSymbol get_type(SymbolTable objectTable,
 				   SymbolTable methodTable,
 				   ClassTable classTable,
-				   class_c c) {
+				   typcase t) {
 
 	Enumeration<Case> e = getElements();
-	if(!e.hasMoreElements()) 
-	    return TreeConstants.No_type;
+	if(!e.hasMoreElements()) {
+	    return TreeConstants.Object_;
+	}
 
-	AbstractSymbol return_type = e.nextElement().get_type();
+	// Get the first valid element type
+	AbstractSymbol return_type = null;
 	for(; e.hasMoreElements();) {
-	    return_type = classTable.lub(return_type,
-					 e.nextElement().get_type());
+	    AbstractSymbol temp = e.nextElement().get_type();
+	    if(classTable.isSubtypeOf(t.get_expr_type(), temp)) {
+		return_type = temp;
+		break;
+	    }
+	}
+
+	// If no valid type found, return No_type
+	if(return_type == null) 
+	    return TreeConstants.Object_;
+
+	// Get valid return type
+	e = getElements();
+	for(; e.hasMoreElements();) {
+	    AbstractSymbol temp = e.nextElement().get_type();
+
+	    // Lub of all legal types is the return type
+	    if(classTable.isSubtypeOf(temp, t.get_expr_type())) {
+		return_type = classTable.lub(return_type,
+					     temp);
+	    }
 	}
 
 	return return_type;
@@ -1682,7 +1705,11 @@ class typcase extends Expression {
 	set_type(cases.get_type(objectTable,
 				methodTable,
 				classTable,
-				c));
+				this));
+    }
+
+    public AbstractSymbol get_expr_type() {
+	return this.expr.get_type();
     }
 }
 
