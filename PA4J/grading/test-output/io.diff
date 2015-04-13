@@ -1,16 +1,8 @@
-34c34
-<           : SELF_TYPE
+42c42
+<         : SELF_TYPE
 ---
->           : Main
-48c48
-<           : SELF_TYPE
+>         : Main
+56c56
+<         : SELF_TYPE
 ---
->           : Main
-65c65
-<             : SELF_TYPE
----
->             : Main
-79c79
-<             : SELF_TYPE
----
->             : Main
+>         : Main

@@ -794,11 +794,15 @@ class method extends Feature {
 
 	// If method already exists in scope, report error
 	if(methodTable.probe(name) != null) {
+
 	    classTable.semantError(c.getFilename(), c)
 		.println("Illegal identifier: multiply defined method "
 			 + name.getString());
+
+	} else if(classTable.isSelfType(return_type)) {
+	    methodTable.addId(name, c.getName());
 	} else {
-	    methodTable.addId(name, this);
+	    methodTable.addId(name, return_type);
 	}
     }
 
@@ -818,6 +822,7 @@ class method extends Feature {
     public void compareArgs(Expressions expressions,
 			    ClassTable classTable,
 			    class_c c) {
+
 	formals.compareArgs(expressions,
 			    classTable,
 			    c);
@@ -887,7 +892,7 @@ class attr extends Feature {
 		    classTable,
 		    c);
 
-	objectTable.addId(name, this);
+	objectTable.addId(name, type_decl);
 	
 	if(!classTable.isSubtypeOf(init.get_type(), 
 				   type_decl)) {
@@ -914,12 +919,20 @@ class attr extends Feature {
 			   class_c c) {
 
 	// Check if attr is already defined in current scope
-	if(objectTable.lookup(name) != null) {
+	if(objectTable.probe(name) != null) {
+
 	    classTable.semantError(c.getFilename(), c)
 		.println("Illegal identifier: multiply define attribute "
-			 + name);
+			 + name.getString());
+
+	} else if(objectTable.lookup(name) != null) {
+
+	    classTable.semantError(c.getFilename(), c)
+		.println("Overriding member of parent class: " + 
+			 name.getString());
+
 	} else {
-	    objectTable.addId(name, this);
+	    objectTable.addId(name, type_decl);
 	}
     }
 
@@ -984,8 +997,7 @@ class formalc extends Formal {
 			 + name.getString());
 	}
 
-	if(type_decl.equals(TreeConstants.self) ||
-	   type_decl.equals(TreeConstants.SELF_TYPE)) {
+	if(classTable.isSelfType(type_decl)) {
 	    
 	    classTable.semantError(c.getFilename(), c)
 		.println("Illegal type for parameter: "
@@ -994,13 +1006,14 @@ class formalc extends Formal {
 
 	// If item already exists, throw multiply defined error
 	if(objectTable.probe(name) != null) {
-	    classTable.semantError(c.getFilename(), this)
+	    classTable.semantError(c.getFilename(), c)
 		.println("Multiply defined argument "
 			 + name.getString());
-	    return;
-	}
 
-	objectTable.addId(name, this);
+	    return;
+	} else {
+	    objectTable.addId(name, type_decl);
+	}
     }
 
     public AbstractSymbol get_type() {
@@ -1015,15 +1028,10 @@ class formalc extends Formal {
 			   ClassTable classTable,
 			   class_c c) {
 
-	// Check if passed argument is a SELF_TYPE
-	if(expression.get_type().equals(TreeConstants.self) ||
-	   expression.get_type().equals(TreeConstants.SELF_TYPE)) {
-	    
-	    expression.set_type(c.getName());
-	}
-
 	// Compare types of argument
-	if(!classTable.isSubtypeOf(expression.get_type(), type_decl)) {
+	if(!classTable.isSubtypeOf(expression.get_type(), 
+				   type_decl)) {
+
 	    classTable.semantError(c.getFilename(), c)
 		.println("Illegal argument: "
 			 + "Expected " + type_decl.getString()
@@ -1084,17 +1092,22 @@ class branch extends Case {
 	}
 
 	if(classTable.checkIllegalIdentifier(name)) {
-	    classTable.semantError(c.getFilename(), c);
+	    classTable.semantError(c.getFilename(), c)
+		.println("Illegal identifier in case: " + 
+			 name.getString());
 	}
 
 	// Enter a new scope to evaluate expression
 	objectTable.enterScope();
 
 	// Bind expression to identifier of case branch
-	objectTable.addId(name, expr);
+	objectTable.addId(name, type_decl);
 
 	// Analyze expression object
-	expr.semant(objectTable, methodTable, classTable, c);
+	expr.semant(objectTable, 
+		    methodTable, 
+		    classTable, 
+		    c);
 
 	objectTable.exitScope();
     }
@@ -1151,20 +1164,21 @@ class assign extends Expression {
 			       getLineNumber());
 	}
 
-	
-
 	// Evaluate expression first
-	expr.semant(objectTable, methodTable, classTable, c);
+	expr.semant(objectTable, 
+		    methodTable, 
+		    classTable, 
+		    c);
 	
 	// Check that identifier exists
-	Object a = objectTable.lookup(name);
+	AbstractSymbol a = (AbstractSymbol) objectTable.lookup(name);
 
 	// Cannot assign to illegal identifier
 	if(classTable.checkIllegalIdentifier(name)) {
 	    classTable.semantError(c.getFilename(), c)
 		.println("Cannot assign to 'self'.");
 
-	    set_type(TreeConstants.SELF_TYPE);
+	    set_type(TreeConstants.Object_);
 	} else if(a == null) {
 	    classTable.semantError(c.getFilename(), c)
 		.println("Assignment to non-existent variable "
@@ -1172,17 +1186,17 @@ class assign extends Expression {
 
 	    set_type(TreeConstants.Object_);
 
-	} else if(!classTable.isSubtypeOf(expr.get_type(),
-					  classTable.getTypeOf(a))) {
+	} else if(!classTable.isSubtypeOf(expr.get_type(), a)) {
 
 	    classTable.semantError(c.getFilename(), c)
 		.println("Assignment to illegal type: "
-			 + classTable.getTypeOf(a).getString() + ", "
+			 + a.getString() + " <- "
 			 + expr.get_type().getString());
 
 	    set_type(TreeConstants.Object_);
+
 	} else {
-	    set_type(classTable.getTypeOf(a));
+	    set_type(a);
 	}
     }
 }
@@ -1260,11 +1274,6 @@ class static_dispatch extends Expression {
 		      classTable,
 		      c);
 
-	if(expr.get_type().equals(TreeConstants.self) ||
-	   expr.get_type().equals(TreeConstants.SELF_TYPE)) {
-	    expr.set_type(c.getName());
-	}
-
 	// Check if method exists in scope of referenced object
 	if(classTable.getClass_c(type_name) != null) {
 	    Feature feature = classTable.getFeature
@@ -1286,6 +1295,7 @@ class static_dispatch extends Expression {
 		classTable.semantError(c.getFilename(), c)
 		    .println("Call to non-existent static method "
 			     + name);
+
 		set_type(TreeConstants.Object_);
 
 	    } else if(feature instanceof method) {
@@ -1383,16 +1393,8 @@ class dispatch extends Expression {
 		      classTable,
 		      c);
 
-
 	// Set type to return type
-	Feature feature = null;
-	if(expr.get_type().equals(TreeConstants.self) ||
-	   expr.get_type().equals(TreeConstants.SELF_TYPE)) {
-
-	    feature = classTable.getFeature(c.getName(), name);
-	} else {
-	    feature = classTable.getFeature(expr.get_type(), name);
-	}
+	Feature feature = classTable.getFeature(expr.get_type(), name);
 
 	// Check if called referenced feature exists
 	if(feature == null) {
@@ -1403,19 +1405,27 @@ class dispatch extends Expression {
 			 expr.get_type().getString());
 
 	    set_type(TreeConstants.Object_);
-	} else {
+	} else if(feature instanceof method) {
 	    
-	    AbstractSymbol new_type = feature.get_type();
+	    method m = (method) feature;
 
-	    if(new_type.equals(TreeConstants.self) ||
-	       new_type.equals(TreeConstants.SELF_TYPE)) {
-		new_type = expr.get_type();
+	    if(classTable.isSelfType(m.get_type())) {
+		if(classTable.isSelfType(expr.get_type())) {
+		    set_type(c.getName());
+		} else {
+		    set_type(expr.get_type());
+		}
+	    } else {
+		set_type(m.get_type());
 	    }
 
-	    set_type(new_type);
-
-	    method m = (method) feature;
 	    m.compareArgs(actual, classTable, c);
+
+	} else {
+
+	    classTable.semantError()
+		.println("Illegal dispatch to attr: "
+			 + name.getString());
 	}
     }
 }
@@ -1540,6 +1550,7 @@ class loop extends Expression {
 
 	// Check that predicate expression is boolean type
 	if(!pred.get_type().equals(TreeConstants.Bool)) {
+
 	    classTable.semantError(c.getFilename(), c)
 		.println("Expected boolean expression; Found "
 			 + pred.get_type().getString());
@@ -1678,8 +1689,8 @@ class block extends Expression {
 	// Set type to type of body expression
 	Expression e = (Expression) body
 	    .getNth(body.getLength() - 1);
+	
 	set_type(e.get_type());
-
 	objectTable.exitScope();
     }
 }
@@ -1743,42 +1754,38 @@ class let extends Expression {
 	objectTable.enterScope();
 
 	// Analyze initialization body
-	init.semant(objectTable, methodTable, classTable, c);
+	init.semant(objectTable, 
+		    methodTable, 
+		    classTable, 
+		    c);
 
 	if(classTable.checkIllegalIdentifier(identifier)) {
 	    classTable.semantError(c.getFilename(), c)
 		.println("Illegal identifier in let assignment: "
-			 + identifier);
+			 + identifier.getString());
 	} else {
 
 	    // Check that type for declared argument matches
 	    // initialization expression
-	    if(init.get_type().equals(TreeConstants.No_type)) {
-		
-		init.set_type(type_decl);
-		objectTable.addId(identifier, init);
-
-	    } else if(!classTable.isSupertypeOf(type_decl, init.get_type())) {
+	    if(!classTable.isSupertypeOf(type_decl, 
+					 init.get_type())) {
 		classTable.semantError(c.getFilename(), c)
 		    .println("Illegal assignment to type: "
-			     + type_decl + ", "
-			     + init.get_type());
+			     + type_decl.getString() + " <- "
+			     + init.get_type().getString());
+		
 	    } else {
-		// Set type of init to supertype
-		init.set_type(type_decl);
-
 		// Add identifier to object scope
-		objectTable.addId(identifier, init);
+		objectTable.addId(identifier, type_decl);
 	    }
 	}
 
-	body.semant(objectTable, methodTable, classTable, c);
+	body.semant(objectTable, 
+		    methodTable, 
+		    classTable, 
+		    c);
 
-	// Set type of let to Least Upper Bound of expression body
-	// and type declaration
-	//set_type(classTable.lub(type_decl, body.get_type()));
 	set_type(body.get_type());
-
 	objectTable.exitScope();
     }
 }
@@ -1829,8 +1836,15 @@ class plus extends Expression {
 			       getLineNumber());
 	}
 
-	e1.semant(objectTable, methodTable, classTable, c);
-	e2.semant(objectTable, methodTable, classTable, c);
+	e1.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
+
+	e2.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
 
 	if(!e1.get_type().equals(TreeConstants.Int) ||
 	   !e2.get_type().equals(TreeConstants.Int)) {
@@ -1893,8 +1907,15 @@ class sub extends Expression {
 			       getLineNumber());
 	}
 
-	e1.semant(objectTable, methodTable, classTable, c);
-	e2.semant(objectTable, methodTable, classTable, c);
+	e1.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
+
+	e2.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
 
 	if(!e1.get_type().equals(TreeConstants.Int) ||
 	   !e2.get_type().equals(TreeConstants.Int)) {
@@ -1957,8 +1978,15 @@ class mul extends Expression {
 			       getLineNumber());
 	}
 
-	e1.semant(objectTable, methodTable, classTable, c);
-	e2.semant(objectTable, methodTable, classTable, c);
+	e1.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
+
+	e2.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
 
 	if(!e1.get_type().equals(TreeConstants.Int) ||
 	   !e2.get_type().equals(TreeConstants.Int)) {
@@ -2021,8 +2049,15 @@ class divide extends Expression {
 			       getLineNumber());
 	}
 
-	e1.semant(objectTable, methodTable, classTable, c);
-	e2.semant(objectTable, methodTable, classTable, c);
+	e1.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
+
+	e2.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
 
 	if(!e1.get_type().equals(TreeConstants.Int) ||
 	   !e2.get_type().equals(TreeConstants.Int)) {
@@ -2031,6 +2066,8 @@ class divide extends Expression {
 		.println("Unexpected types in integer expression: "
 			 + e1.get_type().getString() + ", "
 			 + e2.get_type().getString());
+
+	    set_type(TreeConstants.Object_);
 	} else {
 	    set_type(TreeConstants.Int);
 	}
@@ -2078,7 +2115,10 @@ class neg extends Expression {
 			       getLineNumber());
 	}
 
-	e1.semant(objectTable, methodTable, classTable, c);
+	e1.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
 
 	if(!e1.get_type().equals(TreeConstants.Int)) {
 	    
@@ -2139,8 +2179,15 @@ class lt extends Expression {
 			       getLineNumber());
 	}
 
-	e1.semant(objectTable, methodTable, classTable, c);
-	e2.semant(objectTable, methodTable, classTable, c);
+	e1.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
+
+	e2.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
 
 	if(!e1.get_type().equals(TreeConstants.Int) ||
 	   !e2.get_type().equals(TreeConstants.Int)) {
@@ -2203,16 +2250,26 @@ class eq extends Expression {
 			       getLineNumber());
 	}
 
-	e1.semant(objectTable, methodTable, classTable, c);
-	e2.semant(objectTable, methodTable, classTable, c);
+	e1.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
+
+	e2.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
 
 	if(!classTable.validComparisonTypes(e1, e2)) {
 	    classTable.semantError(c.getFilename(), c)
 		.println("Invalid comparison between types: "
 			 + e1.get_type().getString() + ", "
 			 + e2.get_type().getString());
+
+	    set_type(TreeConstants.Object_);
+ 	} else {
+	    set_type(TreeConstants.Bool);
 	}
-	set_type(TreeConstants.Bool);
     }
 }
 
@@ -2262,8 +2319,15 @@ class leq extends Expression {
 			       getLineNumber());
 	}
 
-	e1.semant(objectTable, methodTable, classTable, c);
-	e2.semant(objectTable, methodTable, classTable, c);
+	e1.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
+
+	e2.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
 
 	if(!e1.get_type().equals(TreeConstants.Int) ||
 	   !e2.get_type().equals(TreeConstants.Int)) {
@@ -2321,7 +2385,10 @@ class comp extends Expression {
 			       getLineNumber());
 	}
 
-	e1.semant(objectTable, methodTable, classTable, c);
+	e1.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
 
 	if(!e1.get_type().equals(TreeConstants.Bool)) {
 
@@ -2518,7 +2585,10 @@ class new_ extends Expression {
 			       getLineNumber());
 	}
 
-	if(classTable.getClass_c(type_name) == null) {
+	if(classTable.isSelfType(type_name)) {
+	    set_type(c.getName());
+
+	} else if(classTable.getClass_c(type_name) == null) {
 	    
 	    classTable.semantError(c.getFilename(), c)
 		.println("Invalid class type: " 
@@ -2572,7 +2642,10 @@ class isvoid extends Expression {
 			       getLineNumber());
 	}
 
-	e1.semant(objectTable, methodTable, classTable, c);
+	e1.semant(objectTable, 
+		  methodTable, 
+		  classTable, 
+		  c);
 
 	if(!e1.get_type().equals(TreeConstants.Bool)) {
 	    
@@ -2670,21 +2743,21 @@ class object extends Expression {
 	}
 
 	// Get reference to identifier in object scope
-	Object o = objectTable.lookup(name);
+	AbstractSymbol o = (AbstractSymbol) objectTable.lookup(name);
 	
 	if(name.equals(TreeConstants.self) ||
 	   name.equals(TreeConstants.SELF_TYPE)) {
 	    
-	    //set_type(c.getName());
 	    set_type(TreeConstants.SELF_TYPE);
 	} else if(o == null) {
 	    // Referenced object does not exist
 	    classTable.semantError(c.getFilename(), c)
 		.println("Reference to non-existant object: " + name);
 
-	    set_type(TreeConstants.No_type);
+	    //set_type(TreeConstants.No_type);
+	    set_type(TreeConstants.Object_);
 	} else {
-	    set_type(classTable.getTypeOf(o));
+	    set_type(o);
 	}
     }
 }

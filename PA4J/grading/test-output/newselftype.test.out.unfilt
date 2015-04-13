@@ -1,3 +1,57 @@
-./newselftype.test:1: Invalid class type: SELF_TYPE
-./newselftype.test:1: Illegal argument: Expected A, Found Object
-Compilation halted due to static semantic errors.
+#1
+_program
+  #1
+  _class
+    A
+    Object
+    "./newselftype.test"
+    (
+    #1
+    _attr
+      bar
+      Int
+      #1
+      _dispatch
+        #1
+        _object
+          self
+        : SELF_TYPE
+        foo
+        (
+        #1
+        _new
+          SELF_TYPE
+        : A
+        )
+      : Int
+    #1
+    _method
+      foo
+      #1
+      _formal
+        a
+        A
+      Int
+      #1
+      _neg
+        #1
+        _int
+          7
+        : Int
+      : Int
+    )
+  #1
+  _class
+    Main
+    Object
+    "./newselftype.test"
+    (
+    #1
+    _method
+      main
+      Int
+      #1
+      _int
+        6
+      : Int
+    )

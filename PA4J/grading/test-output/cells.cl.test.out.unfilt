@@ -65,7 +65,7 @@ _program
             )
           : String
           )
-        : SELF_TYPE
+        : CellularAutomaton
         #1
         _object
           self
@@ -389,7 +389,7 @@ _program
         Int
         #1
         _no_expr
-        : Int
+        : _no_type
         #1
         _let
           num
@@ -410,7 +410,7 @@ _program
             String
             #1
             _no_expr
-            : String
+            : _no_type
             #1
             _block
               #1

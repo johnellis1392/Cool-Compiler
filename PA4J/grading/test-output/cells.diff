@@ -1,11 +1,7 @@
-392c392
-<         : _no_type
+68c68
+<         : SELF_TYPE
 ---
->         : Int
-413c413
-<             : _no_type
----
->             : String
+>         : CellularAutomaton
 475c475
 <               : Object
 ---

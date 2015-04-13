@@ -305,6 +305,12 @@ class ClassTable {
 	    // An illegal heirarchy has been found
 	    semantError(c.getFilename(), c)
 		.println("Illegal cyclic inheritance at " + c);
+	} else if(c == null) {
+	    
+	    class_c s = getClass_c(superClass);
+	    semantError(s.getFilename(), s)
+		.println("");
+
 	} else {
 	    // Continue checking heirarchy
 	    v.add(a);
@@ -435,17 +441,21 @@ class ClassTable {
     }
 
     public AbstractSymbol lub(AbstractSymbol a1, AbstractSymbol a2) {
-	return lub(getClass_c(a1),
-		   getClass_c(a2));
+
+	if(isSelfType(a1)) {
+	    return lub(getCurrentClass(), a2);
+	} else if(isSelfType(a2)) {
+	    return lub(a1, getCurrentClass());
+	} if(isSupertypeOf(a1, a2)) {
+	    return a1;
+	} else {
+	    return lub(getClass_c(a1).getParent(),
+		       a2);
+	}
     }
 
     public AbstractSymbol lub(class_c c1, class_c c2) {
-	if(isSupertypeOf(c1, c2)) {
-	    return c1.getName();
-	} else {
-	    return lub(getClass_c(c1.getParent()), 
-		       c2);
-	}
+	return lub(c1.getName(), c2.getName());
     }
 
 
@@ -455,8 +465,12 @@ class ClassTable {
      */
     public Feature getFeature(AbstractSymbol className,
 			      AbstractSymbol featureName) {
+
 	if(className.equals(TreeConstants.No_class)) {
 	    return null;
+	} else if(isSelfType(className)) {
+	    return getFeature(getCurrentClass(), 
+			      featureName);
 	} else {
 	    class_c c = getClass_c(className);
 	    Feature feature = c.getFeature(featureName);
@@ -467,23 +481,6 @@ class ClassTable {
 		return feature;
 	    }
 	}
-    }
-
-
-    public AbstractSymbol getTypeOf(Object o) {
-
-	if(o instanceof Feature) {
-	    return ((Feature) o).get_type();
-	} else if(o instanceof Formal) {
-	    return ((Formal) o).get_type();
-	} else if(o instanceof Expression) {
-	    return ((Expression) o).get_type();
-	} else if(o instanceof class_c) {
-	    return ((class_c) o).getName();
-	}
-
-	System.out.println("getTypeOf: " + o);
-	return null;
     }
 
 

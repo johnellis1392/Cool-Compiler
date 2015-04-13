@@ -31,7 +31,7 @@ _program
 
           _object
             self
-          : Main
+          : SELF_TYPE
           out_string
           (
 
@@ -39,13 +39,13 @@ _program
             "test"
           : String
           )
-        : SELF_TYPE
+        : Main
 
         _dispatch
 
           _object
             self
-          : Main
+          : SELF_TYPE
           out_int
           (
 
@@ -53,7 +53,7 @@ _program
             5
           : Int
           )
-        : SELF_TYPE
+        : Main
 
         _assign
           y
@@ -62,7 +62,7 @@ _program
 
             _object
               self
-            : Main
+            : SELF_TYPE
             in_string
             (
             )
@@ -76,7 +76,7 @@ _program
 
             _object
               self
-            : Main
+            : SELF_TYPE
             in_int
             (
             )
