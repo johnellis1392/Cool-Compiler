@@ -1,0 +1,20 @@
+6c6,22
+< 45COOL program successfully executed
+---
+> spim: (parser) syntax error on line 33 of file simple-gc.cl.s
+> 	  .word	
+> 	        ^
+> The following symbols are undefined:
+> heap_start
+> Int_protObj
+> Main.main
+> String_protObj
+> class_nameTab
+> Int_init
+> String_init
+> Main_protObj
+> bool_const0
+> bool_const1
+> Main_init
+> Instruction references undefined symbol at 0x004007ac
+> [0x004007ac]	0x3c010000  lui $1, 0 [heap_start]          ; 1457: la	$t0 heap_start

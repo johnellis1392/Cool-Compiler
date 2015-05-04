@@ -1,0 +1,55 @@
+	-1 (abort)	 Calling abort() method
+	-1 (assignment-val)	 Evaluating assignment expressions
+	-1 (basic-init)	 Default initial values of baisc classes 
+	-1 (basicequality)	 Simple equality tests
+	-1 (bigexpr)	 A large arithmetic expression
+	-1 (bool)	 Boolean objects
+	-1 (calls)	 Method calls
+	-1 (cells)	 Cellular automaton program from examples directory
+	-1 (case-none)	 Case with no matching branch
+	-1 (case-order)	 Simple case expression 
+	-1 (casevoid)	 Attempt to use void for case test expr 
+	-1 (copy-self-dispatch)	 Dispatching on a copy of an object created with copy()
+	-1 (dispatch-override-dynamic)	 Dispatch on an overridden method
+	-1 (dispatch-override-static)	 Static dispatch on an overridden method
+	-1 (dispatch-void-dynamic)	 Dispatch on a void object (runtime error)
+	-1 (dispatch-void-static)	 Static dispatch on a void object (runtime error)
+	-1 (dispatchvoidlet)	 Dispatch on a void object created with let (runtime error)
+	-1 (eval-order-args)	 Checking evaluation order of function args on dispatch
+	-1 (eval-order-arith)	 Checking evaluation order of arithmetic expressions
+	-1 (exp)	 An exponent function
+	-1 (fact)	 A factorial function
+	-1 (fibo)	 A Fibonacci function
+	-1 (hairyscary)	 hairy-scary program from examples directory
+	-1 (init-default)	 Initialization of arguments for a "new"d object
+	-1 (init-order-self)	 Evaluation order of attribute initializers
+	-1 (init-order-super)	 Evaluation order of superclass vs subclass attribute initializers
+	-1 (let-nested)	 Nested lets
+	-1 (letinit)	 Let using default initial values
+	-1 (many_objects_on_heap)	 Allocating many objects on the heap
+	-1 (mod-param)	 Method that modifies a parameter
+	-1 (multiple-dispatch)	 Nested function dispatches
+	-1 (multiple-static-dispatch)	 Nested static dispatches
+	-1 (new-self-dispatch)	 Dispatch on a "new"d object
+	-1 (new-self-init)	 Checking evaluation of attribute initialization exprs on a "new"d object
+	-1 (new-st)	 New SELF_TYPE behavior
+	-1 (newbasic)	 Use of new with basic classes
+	-1 (not)	 "not" operator
+	-1 (objectequality)	 Object equality tests
+	-1 (override)	 Dispatch of overridden functions
+	-1 (primes)	 prime number program from examples directory
+	-1 (scoping)	 Scoping test
+	-1 (selftypeattribute)	 Attribute of type SELF_TYPE
+	-1 (sequence)	 Expression sequence (altering objects repetedly)
+	-1 (shadow-attr-case)	 Case bound variable shadows a same-named attribute
+	-1 (shadow-attr-formal)	 Formal parameter shadows a same-named attribute
+	-1 (shadow-attr-let)	 Let bound variable shadows a same-named attribute
+	-1 (shadow-case-let)	 Let bound variable shadows a same-named case-bound variable
+	-1 (shadow-formal-case)	 Case bound variable shadows a formal parameter
+	-1 (shadow-formal-let)	 Let bound variable shadows a formal parameter
+	-1 (shadow-let-case)	 Case bound variable shadows a let bound variable
+	-1 (shadow-let-let)	 Let bound variable shadows a same-named let bound variable
+	-1 (string-methods)	 Dispatch of string methods
+	-1 (typename)	 Object.type_name should return string representation of the dynamic type dispatched
+	-5 (lam-gc)	 Lambda example with garbage collection
+	-5 (simple-gc)	 Simple examine with garbage collection

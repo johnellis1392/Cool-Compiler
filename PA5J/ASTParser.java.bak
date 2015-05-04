@@ -747,13 +747,13 @@ class CUP$ASTParser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 5: // class ::= LINENO CLASS ID ID STR_CONST LPAREN optional_feature_list RPAREN 
             {
-              class_ RESULT = null;
+              class_c RESULT = null;
 		Integer l = (Integer)((java_cup.runtime.Symbol) CUP$ASTParser$stack.elementAt(CUP$ASTParser$top-7)).value;
 		AbstractSymbol n = (AbstractSymbol)((java_cup.runtime.Symbol) CUP$ASTParser$stack.elementAt(CUP$ASTParser$top-5)).value;
 		AbstractSymbol p = (AbstractSymbol)((java_cup.runtime.Symbol) CUP$ASTParser$stack.elementAt(CUP$ASTParser$top-4)).value;
 		AbstractSymbol file = (AbstractSymbol)((java_cup.runtime.Symbol) CUP$ASTParser$stack.elementAt(CUP$ASTParser$top-3)).value;
 		Features f = (Features)((java_cup.runtime.Symbol) CUP$ASTParser$stack.elementAt(CUP$ASTParser$top-1)).value;
-		 curr_lineno = l; RESULT = new class_(l.intValue(), n, p, f, file); 
+		 curr_lineno = l; RESULT = new class_c(l.intValue(), n, p, f, file); 
               CUP$ASTParser$result = new java_cup.runtime.Symbol(3/*class*/, RESULT);
             }
           return CUP$ASTParser$result;
@@ -763,7 +763,7 @@ class CUP$ASTParser$actions {
             {
               Classes RESULT = null;
 		Classes cl = (Classes)((java_cup.runtime.Symbol) CUP$ASTParser$stack.elementAt(CUP$ASTParser$top-1)).value;
-		class_ c = (class_)((java_cup.runtime.Symbol) CUP$ASTParser$stack.elementAt(CUP$ASTParser$top-0)).value;
+		class_c c = (class_c)((java_cup.runtime.Symbol) CUP$ASTParser$stack.elementAt(CUP$ASTParser$top-0)).value;
 		 RESULT = cl.appendElement(c); 
               CUP$ASTParser$result = new java_cup.runtime.Symbol(2/*class_list*/, RESULT);
             }
@@ -773,7 +773,7 @@ class CUP$ASTParser$actions {
           case 3: // class_list ::= class 
             {
               Classes RESULT = null;
-		class_ c = (class_)((java_cup.runtime.Symbol) CUP$ASTParser$stack.elementAt(CUP$ASTParser$top-0)).value;
+		class_c c = (class_c)((java_cup.runtime.Symbol) CUP$ASTParser$stack.elementAt(CUP$ASTParser$top-0)).value;
 		 RESULT = (new Classes(curr_lineno.intValue())).appendElement(c); 
               CUP$ASTParser$result = new java_cup.runtime.Symbol(2/*class_list*/, RESULT);
             }

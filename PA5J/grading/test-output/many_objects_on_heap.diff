@@ -1,0 +1,20 @@
+6c6,22
+< 0COOL program successfully executed
+---
+> spim: (parser) syntax error on line 33 of file many_objects_on_heap.cl.s
+> 	  .word	
+> 	        ^
+> The following symbols are undefined:
+> heap_start
+> Int_protObj
+> Main.main
+> String_protObj
+> class_nameTab
+> Int_init
+> String_init
+> Main_protObj
+> bool_const0
+> bool_const1
+> Main_init
+> Instruction references undefined symbol at 0x004011f8
+> [0x004011f8]	0x3c010000  lui $1, 0 [heap_start]          ; 2449: la	$gp heap_start			# set $gp to the start of the heap

@@ -1,0 +1,23 @@
+SPIM Version 6.5 of January 4, 2003
+Copyright 1990-2003 by James R. Larus (larus@cs.wisc.edu).
+All Rights Reserved.
+See the file README for a full copyright notice.
+Loaded: /usr/class/cs143/cool/lib/trap.handler
+spim: (parser) syntax error on line 33 of file lam-gc.cl.s
+	  .word	
+	        ^
+The following symbols are undefined:
+heap_start
+Int_protObj
+Main.main
+String_protObj
+class_nameTab
+Int_init
+String_init
+Main_protObj
+bool_const0
+bool_const1
+Main_init
+
+Instruction references undefined symbol at 0x004007ac
+[0x004007ac]	0x3c010000  lui $1, 0 [heap_start]          ; 1457: la	$t0 heap_start
